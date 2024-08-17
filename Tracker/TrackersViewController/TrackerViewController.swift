@@ -53,29 +53,11 @@ class TrackerViewController: UIViewController {
         return collectionView
     }()
     
-    private let trackerLabel: UILabel = {
-        let trackerLabel = UILabel()
-        trackerLabel.text = "Трекеры"
-        trackerLabel.textColor = .ypBlack
-        trackerLabel.font = UIFont.boldSystemFont(ofSize: 34)
-        trackerLabel.translatesAutoresizingMaskIntoConstraints = false
-        return trackerLabel
-    }()
-    
-    private let addTrackerLabel: UIButton = {
-        let addTrackerImage = UIButton.systemButton(
-            with: UIImage(named: "Add tracker")!,  target: self, action: #selector(didTapPlusButton))
-        addTrackerImage.tintColor = .black
-        addTrackerImage.translatesAutoresizingMaskIntoConstraints = false
-        return addTrackerImage
-    }()
-    
     private var searchBar: UISearchTextField = {
         let searchBar = UISearchTextField()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.placeholder = "Поиск"
         searchBar.returnKeyType = .done
-        //        searchBar.delegate = self
         searchBar.addTarget(self, action: #selector(searchTextChanged), for: .editingChanged)
         return searchBar
     }()
@@ -90,7 +72,6 @@ class TrackerViewController: UIViewController {
         datePicker.locale = Locale(identifier: "ru_RU")
         datePicker.calendar = Calendar(identifier: .iso8601)
         datePicker.maximumDate = Date()
-        datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
         return datePicker
     }()
     
@@ -129,20 +110,19 @@ class TrackerViewController: UIViewController {
         button.backgroundColor = UIColor(named: "ypBlue")
         return button
     }()
+    
     // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
-        view.backgroundColor = .ypWhite
         updateUI()
+        setupNavBarItems()
+        view.backgroundColor = .ypWhite
     }
     
     private func setupViews() {
-        view.addSubview(trackerLabel)
-        view.addSubview(addTrackerLabel)
         view.addSubview(searchBar)
-        view.addSubview(datePicker)
         view.addSubview(emptyListImage)
         view.addSubview(emptyListLabel)
         view.addSubview(collectionView)
@@ -159,31 +139,24 @@ class TrackerViewController: UIViewController {
     func setupConstraints() {
         NSLayoutConstraint.activate([
             
-            addTrackerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
-            addTrackerLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 6),
-            
-            trackerLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            trackerLabel.topAnchor.constraint(equalTo: addTrackerLabel.bottomAnchor, constant: 13),
-            
+            datePicker.heightAnchor.constraint(equalToConstant: 34),
             datePicker.widthAnchor.constraint(equalToConstant: 120),
-            datePicker.centerYAnchor.constraint(equalTo: trackerLabel.centerYAnchor),
-            datePicker.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
-            searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
-            searchBar.topAnchor.constraint(equalTo: trackerLabel.bottomAnchor, constant: 7),
-            searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
+            searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             searchBar.heightAnchor.constraint(equalToConstant: 36),
             
-            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
+            collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 54),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
             notFoundStack.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
             notFoundStack.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor),
             
             filterButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            filterButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
             filterButton.widthAnchor.constraint(equalToConstant: 114),
             filterButton.heightAnchor.constraint(equalToConstant: 50),
         ])
@@ -200,14 +173,22 @@ class TrackerViewController: UIViewController {
         }
     }
     
-    // MARK: - Actions
-    @objc func datePickerValueChanged(_ sender: UIDatePicker) {
-        let selectedDate = sender.date
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
-        let formattedDate = dateFormatter.string(from: selectedDate)
-        print("Выбранная дата: \(formattedDate)")
+    private func setupNavBarItems() {
+        guard let navigationBar = navigationController?.navigationBar else { return }
+        navigationBar.topItem?.title = "Трекеры"
+        navigationBar.prefersLargeTitles = true
+        navigationBar.topItem?.largeTitleDisplayMode = .always
+        
+        let addTrackerLabel = UIBarButtonItem(image: UIImage(named: "Add tracker"), style: .plain, target: self, action: #selector(Self.didTapPlusButton))
+        addTrackerLabel.tintColor = .black
+        self.navigationItem.leftBarButtonItem = addTrackerLabel
+        
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.datePicker)
+        datePicker.addTarget(self, action: #selector(didChangedDatePicker), for: .valueChanged)
     }
+    
+    // MARK: - Actions
     
     @objc
     private func cancelButtonTapped() {
@@ -247,7 +228,7 @@ extension TrackerViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return visibleCategories[section].trackers.count
+        visibleCategories[section].trackers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

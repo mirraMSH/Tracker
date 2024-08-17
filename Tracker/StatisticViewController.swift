@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StatisticViewController: UIViewController {
+final class StatisticViewController: UIViewController {
     
     private let statisticTopLabel: UILabel = {
         let trackerLabel = UILabel()
@@ -36,7 +36,4 @@ class StatisticViewController: UIViewController {
             statisticTopLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 44)
         ])
     }
-    
-    
-    
 }
