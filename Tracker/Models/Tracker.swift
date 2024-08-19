@@ -5,8 +5,6 @@
 //  Created by Мария Шагина on 28.07.2024.
 //
 
-import Foundation
-
 import UIKit
 
 struct Tracker: Identifiable {
@@ -14,14 +12,17 @@ struct Tracker: Identifiable {
     let label: String
     let emoji: String
     let color: UIColor
+    let completedDaysCount: Int
     let schedule: [Weekday]?
     
-    init(id: UUID = UUID(), label: String, emoji: String, color: UIColor, schedule: [Weekday]?) {
+    init(id: UUID = UUID(), label: String, emoji: String, color: UIColor, completedDaysCount: Int, schedule: [Weekday]?) {
         self.id = id
         self.label = label
         self.emoji = emoji
         self.color = color
+        self.completedDaysCount = completedDaysCount
         self.schedule = schedule
+        
     }
     
     init(tracker: Tracker) {
@@ -29,6 +30,7 @@ struct Tracker: Identifiable {
         self.label = tracker.label
         self.emoji = tracker.emoji
         self.color = tracker.color
+        self.completedDaysCount = tracker.completedDaysCount
         self.schedule = tracker.schedule
     }
     
@@ -39,13 +41,11 @@ struct Tracker: Identifiable {
         self.label = data.label
         self.emoji = emoji
         self.color = color
+        self.completedDaysCount = data.completedDaysCount
         self.schedule = data.schedule
     }
     
     var data: Data {
-        Data(label: label, emoji: emoji, color: color, schedule: schedule)
+        Data(label: label, emoji: emoji, color: color, completedDaysCount: completedDaysCount, schedule: schedule)
     }
 }
-
-
-

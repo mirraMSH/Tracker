@@ -12,6 +12,7 @@ extension Tracker {
         var label: String = ""
         var emoji: String? = nil
         var color: UIColor? = nil
+        var completedDaysCount: Int = 0
         var schedule: [Weekday]? = nil
     }
 }
