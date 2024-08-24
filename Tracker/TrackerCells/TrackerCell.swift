@@ -5,9 +5,6 @@
 //  Created by Мария Шагина on 08.08.2024.
 //
 
-import Foundation
-
-
 import UIKit
 
 protocol TrackerCellDelegate: AnyObject {

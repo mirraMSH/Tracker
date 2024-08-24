@@ -72,7 +72,7 @@ final class AddNewTrackerViewController: UIViewController {
     }
 }
 
-// MARK: - Layout
+// MARK: - UIKit View elements
 
 private extension AddNewTrackerViewController {
     func setupContent() {
