@@ -182,7 +182,7 @@ extension ColorAndEmojiCollectionViewHelper {
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: EmojiCollectionViewCell.reuseIdentifire,
+            withReuseIdentifier: EmojiCollectionViewCell.reuseIdentifier,
             for: indexPath
         ) as? EmojiCollectionViewCell else {
             return UICollectionViewCell()
@@ -197,7 +197,7 @@ extension ColorAndEmojiCollectionViewHelper {
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: ColorCollectionViewCell.reuseIdentifire,
+            withReuseIdentifier: ColorCollectionViewCell.reuseIdentifier,
             for: indexPath
         ) as? ColorCollectionViewCell else {
             return UICollectionViewCell()

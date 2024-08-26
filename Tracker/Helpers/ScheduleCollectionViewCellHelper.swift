@@ -1,5 +1,5 @@
 //
-//  SheduleCollectionViewCellHelper.swift
+//  ScheduleCollectionViewCellHelper.swift
 //  Tracker
 //
 //  Created by Мария Шагина on 26.08.2024.
@@ -7,20 +7,20 @@
 
 import UIKit
 
-final class SheduleCollectionViewCellHelper: NSObject {
+final class ScheduleCollectionViewCellHelper: NSObject {
     private let daysArray = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
     private(set) var selectedDates: Set<String> = []
 }
 
-extension SheduleCollectionViewCellHelper: UICollectionViewDataSource {
+extension ScheduleCollectionViewCellHelper: UICollectionViewDataSource {
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: SheduleCollectionViewCell.reuseIdentifire,
+            withReuseIdentifier: ScheduleCollectionViewCell.reuseIdentifier,
             for: indexPath
-        ) as? SheduleCollectionViewCell else {
+        ) as? ScheduleCollectionViewCell else {
             return UICollectionViewCell()
         }
         
@@ -49,7 +49,7 @@ extension SheduleCollectionViewCellHelper: UICollectionViewDataSource {
     }
 }
 
-extension SheduleCollectionViewCellHelper: UICollectionViewDelegateFlowLayout {
+extension ScheduleCollectionViewCellHelper: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -64,7 +64,7 @@ extension SheduleCollectionViewCellHelper: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension SheduleCollectionViewCellHelper: SheduleCollectionViewCellProtocol {
+extension ScheduleCollectionViewCellHelper: ScheduleCollectionViewCellProtocol {
     func getSelectedDay(_ indexPath: IndexPath?, select: Bool) {
         guard let indexPath else { return }
         var index = indexPath.row + 1

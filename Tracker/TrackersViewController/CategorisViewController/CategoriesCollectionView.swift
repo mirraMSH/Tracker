@@ -1,5 +1,5 @@
 //
-//  CategorisView.swift
+//  CategoriesCollectionView.swift
 //  Tracker
 //
 //  Created by Мария Шагина on 25.08.2024.
@@ -12,17 +12,17 @@ enum EditCategory {
     case editCategory
 }
 
-protocol CategoriesViewDelegate: AnyObject {
+protocol CategoriesCollectionViewDelegate: AnyObject {
     func showEditCategoryViewController(type: EditCategory, editCategoryString: String?, at indexPath: IndexPath?)
     func showDeleteActionSheet(deleteCategory: TrackerCategoryCoreData)
     func showErrorAlert()
     func selectedCategory(categoryCoreData: TrackerCategoryCoreData?)
 }
 
-final class CategoriesView: UIView {
+final class CategoriesCollectionView: UIView {
     
-    weak var delegate: CategoriesViewDelegate?
-    private var viewModel: CategoriesViewModelProtocol?
+    weak var delegate: CategoriesCollectionViewDelegate?
+    private var viewModel: CategoriesCollectionViewModelProtocol?
     
     private struct CategoryViewConstant {
         static let collectionViewReuseIdentifier = "Cell"
@@ -83,8 +83,8 @@ final class CategoriesView: UIView {
     // MARK: - initializers
     init(
         frame: CGRect,
-        delegate: CategoriesViewDelegate?,
-        viewModel: CategoriesViewModelProtocol
+        delegate: CategoriesCollectionViewDelegate?,
+        viewModel: CategoriesCollectionViewModelProtocol
     ) {
         self.delegate = delegate
         self.viewModel = viewModel
@@ -210,7 +210,7 @@ final class CategoriesView: UIView {
 }
 
 // MARK: UICollectionViewDataSource
-extension CategoriesView: UICollectionViewDataSource {
+extension CategoriesCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel?.numberOfRows ?? 0
     }
@@ -231,7 +231,7 @@ extension CategoriesView: UICollectionViewDataSource {
 }
 
 // MARK: UICollectionViewDelegate
-extension CategoriesView: UICollectionViewDelegate {
+extension CategoriesCollectionView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let categoryCoreData = viewModel?.didSelectCategory(by: indexPath)
         delegate?.selectedCategory(categoryCoreData: categoryCoreData)
@@ -245,7 +245,7 @@ extension CategoriesView: UICollectionViewDelegate {
 }
 
 // MARK: UICollectionViewDelegateFlowLayout
-extension CategoriesView: UICollectionViewDelegateFlowLayout {
+extension CategoriesCollectionView: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,

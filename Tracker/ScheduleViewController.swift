@@ -7,24 +7,24 @@
 
 import UIKit
 
-protocol SheduleViewControllerDelegate: AnyObject {
+protocol ScheduleViewControllerDelegate: AnyObject {
     func setSelectedDates(dates: [String])
 }
 
-final class SheduleViewController: UIViewController {
+final class ScheduleViewController: UIViewController {
     
-    private var sheduleView: SheduleView!
+    private var scheduleView: ScheduleView!
     
-    weak var delegate: SheduleViewControllerDelegate?
+    weak var delegate: ScheduleViewControllerDelegate?
     
-    private struct SheduleViewControllerConstants {
+    private struct ScheduleViewControllerConstants {
         static let title = "Расписание"
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        sheduleView = SheduleView(
+        scheduleView = ScheduleView(
             frame: view.bounds,
             delegate: self
         )
@@ -32,17 +32,17 @@ final class SheduleViewController: UIViewController {
     }
     
     private func setupView() {
-        title =  SheduleViewControllerConstants.title
+        title =  ScheduleViewControllerConstants.title
         view.backgroundColor = .clear
-        addScreenView(view: sheduleView)
+        addScreenView(view: scheduleView)
     }
     
     deinit {
-        print("SheduleViewController deinit")
+        print("ScheduleViewController deinit")
     }
 }
 
-extension SheduleViewController: SheduleViewDelegate {
+extension ScheduleViewController: ScheduleViewDelegate {
     func setDates(dates: [String]?) {
         guard let dates, !dates.isEmpty else { return }
         delegate?.setSelectedDates(dates: dates)

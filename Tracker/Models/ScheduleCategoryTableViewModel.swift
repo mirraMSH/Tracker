@@ -9,11 +9,11 @@ import Foundation
 
 struct ScheduleCategoryTableViewModel {
     let name: String
-    var discription: String?
+    var description: String?
 }
 
 extension ScheduleCategoryTableViewModel: Equatable {
     static func == (lrh: ScheduleCategoryTableViewModel, rhs: ScheduleCategoryTableViewModel) -> Bool {
-        lrh.discription == rhs.discription
+        lrh.description == rhs.description
     }
 }

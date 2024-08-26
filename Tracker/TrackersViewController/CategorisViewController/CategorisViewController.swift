@@ -1,5 +1,5 @@
 //
-//  CategorisViewController.swift
+//  CategoriesViewController.swift
 //  Tracker
 //
 //  Created by Мария Шагина on 25.08.2024.
@@ -17,8 +17,10 @@ final class CategoriesViewController: UIViewController {
     weak var delegate: CategoriesViewControllerDelegate?
     var selectedCategoryTitle: String?
     
+    var categoryViewModelStore: CategoriesViewModelStore!
+    
     // MARK: - private properties
-    private var viewModel: CategoriesViewControllerViewModelProtocol
+    private var viewModel: CategoriesViewModelProtocol
     
     private struct CategoryViewControllerConstants {
         static let title = "Категория"
@@ -32,10 +34,10 @@ final class CategoriesViewController: UIViewController {
     }
     
     // MARK: UI
-    private var сategoriesView: CategoriesView!
+    private var сategoriesView: CategoriesCollectionView!
     
     //MARK: - initialization
-    init(viewModel: CategoriesViewControllerViewModelProtocol, delegate: CategoriesViewControllerDelegate) {
+    init(viewModel:CategoriesViewModelProtocol, delegate: CategoriesViewControllerDelegate) {
         self.delegate = delegate
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -52,7 +54,7 @@ final class CategoriesViewController: UIViewController {
         
         let categoriesViewModel = viewModel.categoriesViewModel(with: selectedCategoryTitle)
         
-        сategoriesView = CategoriesView(
+        сategoriesView = CategoriesCollectionView(
             frame: view.bounds,
             delegate: self,
             viewModel: categoriesViewModel
@@ -73,8 +75,8 @@ final class CategoriesViewController: UIViewController {
 }
 
 // MARK: CategoriesViewDelegate
-extension CategoriesViewController: CategoriesViewDelegate {
-    func showDeleteActionSheet(deleteCategory: TrackerCategoryCoreData) {
+extension CategoriesViewController: CategoriesCollectionViewDelegate {
+    /*func showDeleteActionSheet(deleteCategory: TrackerCategoryCoreData) {
         var deleteActionSheet: UIAlertController {
             let message = CategoryViewControllerConstants.deleteActionSheetMessage
             let alertController = UIAlertController(
@@ -97,7 +99,32 @@ extension CategoriesViewController: CategoriesViewDelegate {
         
         let viewController = deleteActionSheet
         present(viewController, animated: true)
-    }
+    }*/
+    
+    func showDeleteActionSheet(deleteCategory: TrackerCategoryCoreData) {
+           var deleteActionSheet: UIAlertController {
+               let message = CategoryViewControllerConstants.deleteActionSheetMessage
+               let alertController = UIAlertController(
+                   title: nil, message: message,
+                   preferredStyle: .actionSheet
+               )
+               let deleteAction = UIAlertAction(
+                   title: CategoryViewControllerConstants.deleteActionTitle,
+                   style: .destructive) { [weak self] _ in
+                       guard let self = self else { return }
+                       self.categoryViewModelStore.deleteCategory(deleteCategory)
+                       self.сategoriesView.reloadCollectionView()
+                   }
+               let cancelAction = UIAlertAction(title: CategoryViewControllerConstants.cancelActionTitle, style: .cancel)
+               alertController.addAction(deleteAction)
+               alertController.addAction(cancelAction)
+               return alertController
+           }
+           
+           let viewController = deleteActionSheet
+           present(viewController, animated: true)
+       }
+    
     
     func showErrorAlert() {
         var errorAlert: UIAlertController {

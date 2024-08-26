@@ -11,7 +11,7 @@ enum ColorPageType: CaseIterable {
     case blue
     case red
     
-    var viewController: UIViewController {
+    var viewControllers: UIViewController {
         switch self {
         case .blue:
             return OnboardingViewController(colorPage: self.colorPage)
@@ -48,11 +48,6 @@ protocol PageViewControllerFactoryProtocol {
     func getViewControllerIndex(of: UIViewController) -> Int?
     func getViewController(at index: Int) -> UIViewController?
 }
-
-final class PageViewControllerFactory {
-    private var viewControllres: [UIViewController] = ColorPageType.allCases.compactMap { $0.viewController }
-}
-
 
 final class PageViewController: UIPageViewController {
     
@@ -154,8 +149,8 @@ extension PageViewController: UIPageViewControllerDelegate {
                             previousViewControllers: [UIViewController],
                             transitionCompleted completed: Bool) {
         guard completed else { return }
-        guard let currenViewController = pageViewController.viewControllers?.first,
-              let currentIndex = pagesFactory?.getViewControllerIndex(of: currenViewController) else { return }
+        guard let currentViewController = pageViewController.viewControllers?.first,
+              let currentIndex = pagesFactory?.getViewControllerIndex(of: currentViewController) else { return }
         pageControl.currentPage = currentIndex
     }
 }
@@ -165,10 +160,10 @@ extension PageViewControllerFactory: PageViewControllerFactoryProtocol {
     var numberOfPages: Int { return ColorPageType.allCases.count }
     
     func getViewController(at index: Int) -> UIViewController? {
-        viewControllres[index]
+        viewControllers[index]
     }
     
     func getViewControllerIndex(of viewController: UIViewController) -> Int? {
-        viewControllres.firstIndex(of: viewController)
+        viewControllers.firstIndex(of: viewController)
     }
 }

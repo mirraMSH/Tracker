@@ -1,5 +1,5 @@
 //
-//  SheduleCategoryTableViewHelper.swift
+//  ScheduleCategoryTableViewHelper.swift
 //  Tracker
 //
 //  Created by Мария Шагина on 26.08.2024.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-protocol SheduleCategoryTableViewHelperDelegate: AnyObject {
+protocol ScheduleCategoryTableViewHelperDelegate: AnyObject {
     func showCategory()
-    func showShedule()
+    func showSchedule()
     func reloadTableView()
 }
 
-final class SheduleCategoryTableViewHelper: NSObject {
+final class ScheduleCategoryTableViewHelper: NSObject {
     
     private var typeTracker: TypeTracker
     private var cellsTitle = [
@@ -21,7 +21,7 @@ final class SheduleCategoryTableViewHelper: NSObject {
         ScheduleCategoryTableViewModel(name: "Расписание", description: nil),
     ]
     
-    weak var delegate: SheduleCategoryTableViewHelperDelegate?
+    weak var delegate: ScheduleCategoryTableViewHelperDelegate?
     
     init(typeTracker: TypeTracker) {
         self.typeTracker = typeTracker
@@ -48,14 +48,14 @@ final class SheduleCategoryTableViewHelper: NSObject {
 }
 
 // MARK: UITableViewDelegate
-extension SheduleCategoryTableViewHelper: UITableViewDelegate {
+extension ScheduleCategoryTableViewHelper: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         Constants.hugHeight
     }
 }
 
 // MARK: UITableViewDataSource
-extension SheduleCategoryTableViewHelper: UITableViewDataSource {
+extension ScheduleCategoryTableViewHelper: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch typeTracker {
         case .habit:
@@ -78,7 +78,7 @@ extension SheduleCategoryTableViewHelper: UITableViewDataSource {
         case 0:
             delegate?.showCategory()
         case 1:
-            delegate?.showShedule()
+            delegate?.showSchedule()
         default:
             break
         }

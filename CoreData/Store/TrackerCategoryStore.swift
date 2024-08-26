@@ -10,7 +10,7 @@ import CoreData
 
 protocol TrackerCategoryStoreProtocol: AnyObject {
     var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData> { get }
-    func creatTrackerCategory(from trackerCategoryCoreData:  TrackerCategoryCoreData) throws -> TrackerCategory
+    func createTrackerCategory(from trackerCategoryCoreData:  TrackerCategoryCoreData) throws -> TrackerCategory
     func addTrackerCategoryCoreData(from trackerCategory: TrackerCategory)
     func getTrackerCategory(by indexPath: IndexPath) -> TrackerCategory?
     func getTrackerCategoryCoreData(by indexPath: IndexPath) -> TrackerCategoryCoreData?
@@ -52,19 +52,19 @@ final class TrackerCategoryStore: NSObject {
     
     
     private func saveContext() {
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                assertionFailure("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
+        guard context.hasChanges else { return }
+        
+        do {
+            try context.save()
+        } catch {
+            let nserror = error as NSError
+            print("Unresolved error \(nserror), \(nserror.userInfo)")
         }
     }
 }
 
 extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
-    func creatTrackerCategory(from trackerCategoryCoreData:  TrackerCategoryCoreData) throws -> TrackerCategory {
+    func createTrackerCategory(from trackerCategoryCoreData:  TrackerCategoryCoreData) throws -> TrackerCategory {
         guard let title = trackerCategoryCoreData.title else { throw TrackerCategoryStoreError.errorDecodingTitle }
         return TrackerCategory(title: title)
     }
@@ -77,7 +77,7 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
     
     func getTrackerCategory(by indexPath: IndexPath) -> TrackerCategory? {
         let object = fetchedResultsController.object(at: indexPath)
-        return try? creatTrackerCategory(from: object)
+        return try? createTrackerCategory(from: object)
     }
     
     func getTrackerCategoryCoreData(by indexPath: IndexPath) -> TrackerCategoryCoreData? {

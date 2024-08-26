@@ -9,14 +9,6 @@ import UIKit
 
 class TrackerViewController: UIViewController {
     
-    private struct TrackersListControllerConstants {
-        static let plugLabelText = "Что будем отслеживать?"
-        static let plugImageName = "emptytrackerList"
-        static let addTrackerButtonImageName = "Add tracker"
-        static let localeIdentifier = "ru_RU"
-        static let reuseIdentifierCell = "cell"
-    }
-    
     // MARK: properties
     private let searchController = UISearchController(searchResultsController: nil)
     
@@ -236,6 +228,16 @@ extension TrackerViewController: UICollectionViewDataSource {
         let categoryTitle = dataProvider.getSectionTitle(at: indexPath.section)
         view.config(title: categoryTitle)
         return view
+    }
+}
+
+extension TrackerViewController {
+    private struct TrackersListControllerConstants {
+        static let plugLabelText = "Что будем отслеживать?"
+        static let plugImageName = "emptytrackerList"
+        static let addTrackerButtonImageName = "Add tracker"
+        static let localeIdentifier = "ru_RU"
+        static let reuseIdentifierCell = "cell"
     }
 }
 

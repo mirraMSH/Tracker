@@ -30,7 +30,7 @@ final class EditCategoryView: UIView {
             frame: .zero,
             placeholderText: CategoryViewConstant.editCategoryTextFieldPlaceholderText
         )
-        textField.addTarget(self, action: #selector(textFieldChangeed), for: .editingChanged)
+        textField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         return textField
     }()
     
@@ -117,7 +117,7 @@ final class EditCategoryView: UIView {
         }
     }
     
-    @objc private func textFieldChangeed() {
+    @objc private func textFieldChanged() {
         if editCategoryTextField.text?.isEmpty == false {
             editButton.backgroundColor = .ypBlack
             editButton.isEnabled = true

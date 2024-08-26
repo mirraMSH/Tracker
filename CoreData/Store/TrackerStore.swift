@@ -39,19 +39,19 @@ final class TrackerStore: NSObject {
     }
     
     func addNewTracker(_ tracker: Tracker, with category: TrackerCategoryCoreData) {
-        creatTrackerCoreData(from: tracker, with: category)
+        createTrackerCoreData(from: tracker, with: category)
         saveContext()
     }
     
-    private func creatTrackerCoreData(from tracker: Tracker, with category: TrackerCategoryCoreData)  {
+    private func createTrackerCoreData(from tracker: Tracker, with category: TrackerCategoryCoreData)  {
         let colorHex = colorMarshaling.hexStringFromColor(color: tracker.color ?? UIColor())
-        let sheduleString = scheduleMarshaling.stringFromArray(array: tracker.schedule ?? [String]())
+        let scheduleString = scheduleMarshaling.stringFromArray(array: tracker.schedule ?? [String]())
         let trackerCoreData = TrackerCoreData(context: context)
         trackerCoreData.colorHex = colorHex
         trackerCoreData.emoji = tracker.emoji
         trackerCoreData.id = tracker.id
         trackerCoreData.name = tracker.name
-        trackerCoreData.schedule = sheduleString
+        trackerCoreData.schedule = scheduleString
         trackerCoreData.category = category
     }
     
@@ -72,13 +72,13 @@ final class TrackerStore: NSObject {
     }
     
     private func saveContext() {
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                print("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
+        guard context.hasChanges else { return }
+        
+        do {
+            try context.save()
+        } catch {
+            let nserror = error as NSError
+            print("Unresolved error \(nserror), \(nserror.userInfo)")
         }
     }
 }

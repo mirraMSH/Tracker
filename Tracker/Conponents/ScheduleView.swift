@@ -1,5 +1,5 @@
 //
-//  SheduleView.swift
+//  ScheduleView.swift
 //  Tracker
 //
 //  Created by Мария Шагина on 26.08.2024.
@@ -7,24 +7,24 @@
 
 import UIKit
 
-protocol SheduleViewDelegate: AnyObject {
+protocol ScheduleViewDelegate: AnyObject {
     func setDates(dates: [String]?)
 }
 
-final class SheduleView: UIView {
+final class ScheduleView: UIView {
     
     // MARK: properties
-    weak var delegate: SheduleViewDelegate?
+    weak var delegate: ScheduleViewDelegate?
     
-    private struct SheduleViewConstant {
+    private struct ScheduleViewConstant {
         static let collectionViewReuseIdentifier = "cell"
-        static let addButtontitle = "Готово"
+        static let addButtonTitle = "Готово"
     }
     
-    private var sheduleCollectionViewCellHelper: SheduleCollectionViewCellHelper?
+    private var scheduleCollectionViewCellHelper: ScheduleCollectionViewCellHelper?
     
     // MARK: ui
-    private let sheduleCollectionView: UICollectionView = {
+    private let scheduleCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(
@@ -33,11 +33,11 @@ final class SheduleView: UIView {
         )
         collectionView.register(
             UICollectionViewCell.self,
-            forCellWithReuseIdentifier: SheduleViewConstant.collectionViewReuseIdentifier
+            forCellWithReuseIdentifier: ScheduleViewConstant.collectionViewReuseIdentifier
         )
         collectionView.register(
-            SheduleCollectionViewCell.self,
-            forCellWithReuseIdentifier: SheduleCollectionViewCell.reuseIdentifire
+            ScheduleCollectionViewCell.self,
+            forCellWithReuseIdentifier: ScheduleCollectionViewCell.reuseIdentifier
         )
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.showsVerticalScrollIndicator = false
@@ -48,7 +48,7 @@ final class SheduleView: UIView {
     private lazy var addButton: TrackerButton = {
         let button = TrackerButton(
             frame: .zero,
-            title: SheduleViewConstant.addButtontitle
+            title: ScheduleViewConstant.addButtonTitle
         )
         button.addTarget(
             self,
@@ -61,15 +61,15 @@ final class SheduleView: UIView {
     // MARK: init
     init(
         frame: CGRect,
-        delegate: SheduleViewDelegate?
+        delegate: ScheduleViewDelegate?
     ) {
         self.delegate = delegate
         
         super.init(frame: frame)
         
-        sheduleCollectionViewCellHelper = SheduleCollectionViewCellHelper()
-        sheduleCollectionView.delegate = sheduleCollectionViewCellHelper
-        sheduleCollectionView.dataSource = sheduleCollectionViewCellHelper
+        scheduleCollectionViewCellHelper = ScheduleCollectionViewCellHelper()
+        scheduleCollectionView.delegate = scheduleCollectionViewCellHelper
+        scheduleCollectionView.dataSource = scheduleCollectionViewCellHelper
         
         setupView()
         addSubviews()
@@ -89,17 +89,17 @@ final class SheduleView: UIView {
     
     private func addSubviews() {
         addSubViews(
-            sheduleCollectionView,
+            scheduleCollectionView,
             addButton
         )
     }
     
     private func activateConstraints() {
         NSLayoutConstraint.activate([
-            sheduleCollectionView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            sheduleCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.indentationFromEdges),
-            sheduleCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.indentationFromEdges),
-            sheduleCollectionView.bottomAnchor.constraint(equalTo: addButton.topAnchor),
+            scheduleCollectionView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            scheduleCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.indentationFromEdges),
+            scheduleCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.indentationFromEdges),
+            scheduleCollectionView.bottomAnchor.constraint(equalTo: addButton.topAnchor),
             
             addButton.heightAnchor.constraint(equalToConstant: 75),
             addButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
@@ -113,8 +113,8 @@ final class SheduleView: UIView {
     private func addButtonTapped() {
         addButton.showAnimation { [weak self] in
             guard let self = self else { return }
-            let weeDayNumber = [ "Пн": 0, "Вт": 1, "Ср": 2, "Чт": 3, "Пт": 4, "Сб": 5, "Вс": 6]
-            let sortDays = self.sheduleCollectionViewCellHelper?.selectedDates.sorted(by: { weeDayNumber[$0] ?? 7 < weeDayNumber[$1] ?? 7
+            let weekDayNumber = Constants.rowOfWeekdays
+            let sortDays = self.scheduleCollectionViewCellHelper?.selectedDates.sorted(by: { weekDayNumber[$0] ?? 7 < weekDayNumber[$1] ?? 7
             })
             self.delegate?.setDates(dates: sortDays)
         }

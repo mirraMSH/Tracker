@@ -11,7 +11,7 @@ import UIKit
 
 protocol TypeTrackerViewDelegate: AnyObject {
     func showHabit()
-    func showIirregularEvents()
+    func showIrregularEvents()
 }
 
 final class TypeTrackerView: UIView {
@@ -21,7 +21,7 @@ final class TypeTrackerView: UIView {
     
     // MARK: TypeTrackerViewConstants
     private struct TypeTrackerViewConstants {
-        static let habbitButtonTitle = "Привычка"
+        static let habitButtonTitle = "Привычка"
         static let eventButtonTitle = "Нерегулярные события"
         static let topAnchorConstant: CGFloat = 30
         static let spacingConstant: CGFloat = 16
@@ -42,7 +42,7 @@ final class TypeTrackerView: UIView {
     private lazy var habitButton: TrackerButton = {
         let button = TrackerButton(
             frame: .zero,
-            title: TypeTrackerViewConstants.habbitButtonTitle
+            title: TypeTrackerViewConstants.habitButtonTitle
         )
         button.addTarget(
             self,
@@ -117,7 +117,7 @@ final class TypeTrackerView: UIView {
     private func eventButtonTapped() {
         eventButton.showAnimation { [weak self] in
             guard let self = self else { return }
-            self.delegate?.showIirregularEvents()
+            self.delegate?.showIrregularEvents()
         }
     }
 }

@@ -1,5 +1,5 @@
 //
-//  SheduleCollectionViewCell.swift
+//  ScheduleCollectionViewCell.swift
 //  Tracker
 //
 //  Created by Мария Шагина on 10.08.2024.
@@ -7,15 +7,15 @@
 
 import UIKit
 
-protocol SheduleCollectionViewCellProtocol: AnyObject {
+protocol ScheduleCollectionViewCellProtocol: AnyObject {
     func getSelectedDay(_ indexPath: IndexPath?, select: Bool)
 }
 
 final class ScheduleCollectionViewCell: UICollectionViewCell {
     
-    static let reuseIdentifire = "SheduleCollectionViewCell"
+    static let reuseIdentifier = "ScheduleCollectionViewCell"
     
-    weak var delegate: SheduleCollectionViewCellProtocol?
+    weak var delegate: ScheduleCollectionViewCellProtocol?
     var indexPath: IndexPath?
     
     private lazy var dayLabel: UILabel = {

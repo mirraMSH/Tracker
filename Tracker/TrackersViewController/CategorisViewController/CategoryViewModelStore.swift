@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+class CategoriesViewModelStore {
+    private let categoryStore = TrackerCategoryStore()
+    
+    func deleteCategory(_ category: TrackerCategoryCoreData) {
+        categoryStore.deleteCategory(delete: category)
+    }
+}

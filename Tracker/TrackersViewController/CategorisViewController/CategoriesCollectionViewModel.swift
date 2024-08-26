@@ -9,7 +9,7 @@ import Foundation
 
 typealias Binding<T> = (T) -> Void
 
-protocol CategoriesViewModelProtocol {
+protocol CategoriesCollectionViewModelProtocol {
     var numberOfRows: Int { get }
     var hidePlugView: Binding<Bool>? { get set }
     var needToUpdateCollectionView: Binding<Bool>? { get set }
@@ -38,7 +38,7 @@ final class CategoriesCollectionViewModel {
 }
 
 // MARK: CategoriesViewModelProtocol
-extension CategoriesCollectionViewModel: CategoriesViewModelProtocol {
+extension CategoriesCollectionViewModel: CategoriesCollectionViewModelProtocol {
     var numberOfRows: Int {
         categoryStore.fetchedResultsController.sections?[0].numberOfObjects ?? 0
     }

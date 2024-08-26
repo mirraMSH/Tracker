@@ -7,17 +7,17 @@
 
 import Foundation
 
-protocol CategoriesViewControllerViewModelProtocol {
-    func categoriesViewModel(with selectedCategory: String?) -> CategoriesViewModel
+protocol CategoriesViewModelProtocol {
+    func categoriesViewModel(with selectedCategory: String?) -> CategoriesCollectionViewModel
 }
 
-final class CategoriesViewControllerViewModel {}
+final class CategoriesViewModel {}
 
 // MARK: CategoriesViewModelProtocol
-extension CategoriesViewControllerViewModel: CategoriesViewControllerViewModelProtocol {
-    func categoriesViewModel(with selectedCategory: String?) -> CategoriesViewModel {
+extension CategoriesViewModel: CategoriesViewModelProtocol {
+    func categoriesViewModel(with selectedCategory: String?) -> CategoriesCollectionViewModel {
         let categoryStore = TrackerCategoryStore()
-        return CategoriesViewModel(selectedCategory: selectedCategory, categoryStore: categoryStore)
+        return CategoriesCollectionViewModel(selectedCategory: selectedCategory, categoryStore: categoryStore)
     }
 }
 

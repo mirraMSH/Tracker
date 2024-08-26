@@ -18,8 +18,8 @@ final class CreateTrackerViewController: UIViewController {
     weak var delegate: CreateTrackerViewControllerDelegate?
     
     // MARK: helpers
-    private enum SheduleCategory {
-        case shedule
+    private enum SсheduleCategory {
+        case sсhedule
         case category
     }
     
@@ -111,7 +111,7 @@ extension CreateTrackerViewController: CreateTrackerViewDelegate {
     }
     
     func showSchedule() {
-        let viewController = createViewController(type: .shedule)
+        let viewController = createViewController(type: .sсhedule)
         present(viewController, animated: true)
     }
     
@@ -127,16 +127,16 @@ extension CreateTrackerViewController: CreateTrackerViewDelegate {
 
 // MARK: create CategoryViewController
 extension CreateTrackerViewController {
-    private func createViewController(type: SheduleCategory) -> UINavigationController {
+    private func createViewController(type: SсheduleCategory) -> UINavigationController {
         let viewController: UIViewController
         
         switch type {
-        case .shedule:
-            let sheduleViewController = SheduleViewController()
+        case .sсhedule:
+            let sheduleViewController = ScheduleViewController()
             sheduleViewController.delegate = self
             viewController = sheduleViewController
         case .category:
-            let viewModel = CategoriesViewControllerViewModel()
+            let viewModel = CategoriesViewModel()
             let categoryViewController = CategoriesViewController(viewModel: viewModel, delegate: self)
             viewController = categoryViewController
             
@@ -159,11 +159,11 @@ extension CreateTrackerViewController: CategoriesViewControllerDelegate {
     }
 }
 
-// MARK: SheduleViewControllerDelegate
-extension CreateTrackerViewController: SheduleViewControllerDelegate {
+// MARK: SсheduleViewControllerDelegate
+extension CreateTrackerViewController: ScheduleViewControllerDelegate {
     func setSelectedDates(dates: [String]) {
         selectedDates = dates
-        createTrackerView.setShedule(with: stringSelectedDates)
+        createTrackerView.setSchedule(with: stringSelectedDates)
         dismiss(animated: true)
     }
 }

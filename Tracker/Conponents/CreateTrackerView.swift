@@ -25,7 +25,7 @@ final class CreateTrackerView: UIView {
         static let createButtonTitle = "Создать"
         static let errorLabelText = "Ограничение 38 символов"
         static let textFieldPlaceholder = "Введите название трекера"
-        static let standartCellIdentifire = "cell"
+        static let standardCellIdentifier = "cell"
         static let spacingConstant: CGFloat = 8
     }
     
@@ -41,7 +41,7 @@ final class CreateTrackerView: UIView {
     }
     
     private var emojiCollectionViewHelper: ColorAndEmojiCollectionViewHelper
-    private var sheduleCategoryTableViewHelper: SheduleCategoryTableViewHelper
+    private var scheduleCategoryTableViewHelper: ScheduleCategoryTableViewHelper
     private var nameTrackerTextFieldHelper =  NameTrackerTextFieldHelper()
     
     private var emoji: String?
@@ -80,7 +80,7 @@ final class CreateTrackerView: UIView {
             frame: .zero,
             placeholderText: CreateTrackerViewConstants.textFieldPlaceholder
         )
-        textField.addTarget(self, action: #selector(textFieldChangeed), for: .editingChanged)
+        textField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         return textField
     }()
     
@@ -95,12 +95,12 @@ final class CreateTrackerView: UIView {
         return label
     }()
     
-    private lazy var sheduleCategoryTableView: UITableView = {
+    private lazy var scheduleCategoryTableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(
             UITableViewCell.self,
-            forCellReuseIdentifier: CreateTrackerViewConstants.standartCellIdentifire
+            forCellReuseIdentifier: CreateTrackerViewConstants.standardCellIdentifier
         )
         tableView.backgroundColor = .clear
         tableView.layer.cornerRadius = Constants.cornerRadius
@@ -117,7 +117,7 @@ final class CreateTrackerView: UIView {
         )
         collectionView.register(
             EmojiCollectionViewCell.self,
-            forCellWithReuseIdentifier: EmojiCollectionViewCell.reuseIdentifire
+            forCellWithReuseIdentifier: EmojiCollectionViewCell.reuseIdentifier
         )
         collectionView.register(
             HeaderReusableView.self,
@@ -125,7 +125,7 @@ final class CreateTrackerView: UIView {
             withReuseIdentifier: HeaderReusableView.reuseIdentifier)
         collectionView.register(
             ColorCollectionViewCell.self,
-            forCellWithReuseIdentifier: ColorCollectionViewCell.reuseIdentifire)
+            forCellWithReuseIdentifier: ColorCollectionViewCell.reuseIdentifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
@@ -182,20 +182,20 @@ final class CreateTrackerView: UIView {
         self.delegate = delegate
         self.typeTracer = typeTracker
         emojiCollectionViewHelper = ColorAndEmojiCollectionViewHelper()
-        sheduleCategoryTableViewHelper = SheduleCategoryTableViewHelper(typeTracker: typeTracker)
+        scheduleCategoryTableViewHelper = ScheduleCategoryTableViewHelper(typeTracker: typeTracker)
         super.init(frame: frame)
         
         colorAndEmojiCollectionView.dataSource = emojiCollectionViewHelper
         colorAndEmojiCollectionView.delegate = emojiCollectionViewHelper
         
-        sheduleCategoryTableView.dataSource = sheduleCategoryTableViewHelper
-        sheduleCategoryTableView.delegate = sheduleCategoryTableViewHelper
+        scheduleCategoryTableView.dataSource = scheduleCategoryTableViewHelper
+        scheduleCategoryTableView.delegate = scheduleCategoryTableViewHelper
         
         nameTrackerTextField.delegate = nameTrackerTextFieldHelper
         emojiCollectionViewHelper.delegate = self
         
         nameTrackerTextFieldHelper.delegate = self
-        sheduleCategoryTableViewHelper.delegate = self
+        scheduleCategoryTableViewHelper.delegate = self
         
         setupView()
         addViews()
@@ -208,11 +208,11 @@ final class CreateTrackerView: UIView {
     }
     
     func setCategory(with category: String?) {
-        sheduleCategoryTableViewHelper.setCategory(category: category)
+        scheduleCategoryTableViewHelper.setCategory(category: category)
     }
     
-    func setShedule(with shedule: String?) {
-        sheduleCategoryTableViewHelper.setSchedule(schedule: shedule)
+    func setSchedule(with schedule: String?) {
+        scheduleCategoryTableViewHelper.setSchedule(schedule: schedule)
     }
     
     // MARK: - methods
@@ -232,7 +232,7 @@ final class CreateTrackerView: UIView {
             buttonStackView
         )
         
-        stackView.addArrangedSubview(sheduleCategoryTableView)
+        stackView.addArrangedSubview(scheduleCategoryTableView)
         stackView.addArrangedSubview(colorAndEmojiCollectionView)
         
         buttonStackView.addArrangedSubview(cancelButton)
@@ -243,11 +243,8 @@ final class CreateTrackerView: UIView {
         
         var tableViewHeight: CGFloat = 75
         
-        switch typeTracer {
-        case .habit:
+        if typeTracer == .habit {
             tableViewHeight *= 2
-        case .event:
-            break
         }
         
         let buttonHeight: CGFloat = 60
@@ -287,7 +284,7 @@ final class CreateTrackerView: UIView {
             buttonStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -edge),
             buttonStackView.heightAnchor.constraint(equalToConstant: buttonHeight),
             
-            sheduleCategoryTableView.heightAnchor.constraint(equalToConstant: tableViewHeight),
+            scheduleCategoryTableView.heightAnchor.constraint(equalToConstant: tableViewHeight),
         ])
     }
     
@@ -309,7 +306,7 @@ final class CreateTrackerView: UIView {
         }
     }
     
-    @objc private func textFieldChangeed() {
+    @objc private func textFieldChanged() {
         if nameTrackerTextField.text?.isEmpty == false {
             createButton.backgroundColor = .ypBlack
             createButton.isEnabled = true
@@ -349,13 +346,13 @@ extension CreateTrackerView: NameTrackerTextFieldHelperDelegate {
     }
 }
 
-// MARK: SheduleCategoryTableViewHelperDelegate
-extension CreateTrackerView: SheduleCategoryTableViewHelperDelegate {
+// MARK: ScheduleCategoryTableViewHelperDelegate
+extension CreateTrackerView: ScheduleCategoryTableViewHelperDelegate {
     func reloadTableView() {
-        sheduleCategoryTableView.reloadData()
+        scheduleCategoryTableView.reloadData()
     }
     
-    func showShedule() {
+    func showSchedule() {
         delegate?.showSchedule()
     }
     
