@@ -21,7 +21,7 @@ final class TextField: UITextField {
         backgroundColor = .ypBackgroundday
         self.placeholder = placeholder
         clearButtonMode = .whileEditing
-        layer.cornerRadius = 16
+        layer.cornerRadius = Constants.cornerRadius
     }
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {

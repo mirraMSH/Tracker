@@ -7,45 +7,16 @@
 
 import UIKit
 
-struct Tracker: Identifiable {
-    let id: UUID
-    let label: String
+struct Tracker {
+    let id: String
+    let name: String
+    let color: UIColor?
     let emoji: String
-    let color: UIColor
-    let completedDaysCount: Int
-    let schedule: [Weekday]?
-    
-    init(id: UUID = UUID(), label: String, emoji: String, color: UIColor, completedDaysCount: Int, schedule: [Weekday]?) {
-        self.id = id
-        self.label = label
-        self.emoji = emoji
-        self.color = color
-        self.completedDaysCount = completedDaysCount
-        self.schedule = schedule
-        
-    }
-    
-    init(tracker: Tracker) {
-        self.id = tracker.id
-        self.label = tracker.label
-        self.emoji = tracker.emoji
-        self.color = tracker.color
-        self.completedDaysCount = tracker.completedDaysCount
-        self.schedule = tracker.schedule
-    }
-    
-    init(data: Data) {
-        guard let emoji = data.emoji, let color = data.color else { fatalError() }
-        
-        self.id = UUID()
-        self.label = data.label
-        self.emoji = emoji
-        self.color = color
-        self.completedDaysCount = data.completedDaysCount
-        self.schedule = data.schedule
-    }
-    
-    var data: Data {
-        Data(label: label, emoji: emoji, color: color, completedDaysCount: completedDaysCount, schedule: schedule)
+    let schedule: [String]?
+}
+
+extension Tracker: Equatable {
+    static func == (lrh: Tracker, rhs: Tracker) -> Bool {
+        lrh.id == rhs.id
     }
 }
