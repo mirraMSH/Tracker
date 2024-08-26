@@ -20,7 +20,7 @@ protocol CategoriesViewModelProtocol {
     func needToHidePlugView()
 }
 
-final class CategoriesViewModel {
+final class CategoriesCollectionViewModel {
     var hidePlugView: Binding<Bool>?
     var needToUpdateCollectionView: Binding<Bool>?
     
@@ -38,7 +38,7 @@ final class CategoriesViewModel {
 }
 
 // MARK: CategoriesViewModelProtocol
-extension CategoriesViewModel: CategoriesViewModelProtocol {
+extension CategoriesCollectionViewModel: CategoriesViewModelProtocol {
     var numberOfRows: Int {
         categoryStore.fetchedResultsController.sections?[0].numberOfObjects ?? 0
     }

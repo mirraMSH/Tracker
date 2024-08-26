@@ -11,7 +11,7 @@ protocol SheduleCollectionViewCellProtocol: AnyObject {
     func getSelectedDay(_ indexPath: IndexPath?, select: Bool)
 }
 
-final class SheduleCollectionViewCell: UICollectionViewCell {
+final class ScheduleCollectionViewCell: UICollectionViewCell {
     
     static let reuseIdentifire = "SheduleCollectionViewCell"
     

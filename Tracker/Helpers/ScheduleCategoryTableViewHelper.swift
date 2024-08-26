@@ -17,8 +17,8 @@ final class SheduleCategoryTableViewHelper: NSObject {
     
     private var typeTracker: TypeTracker
     private var cellsTitle = [
-        ScheduleCategoryTableViewModel(name: "Категория", discription: nil),
-        ScheduleCategoryTableViewModel(name: "Расписание", discription: nil),
+        ScheduleCategoryTableViewModel(name: "Категория", description: nil),
+        ScheduleCategoryTableViewModel(name: "Расписание", description: nil),
     ]
     
     weak var delegate: SheduleCategoryTableViewHelperDelegate?
@@ -28,12 +28,12 @@ final class SheduleCategoryTableViewHelper: NSObject {
     }
     
     func setCategory(category: String?) {
-        cellsTitle[0].discription = category
+        cellsTitle[0].description = category
         delegate?.reloadTableView()
     }
     
     func setSchedule(schedule: String?) {
-        cellsTitle[1].discription = schedule
+        cellsTitle[1].description = schedule
         delegate?.reloadTableView()
     }
     
@@ -69,7 +69,7 @@ extension SheduleCategoryTableViewHelper: UITableViewDataSource {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         cellConfig(cell: cell)
         cell.textLabel?.text = cellsTitle[indexPath.row].name
-        cell.detailTextLabel?.text = cellsTitle[indexPath.row].discription
+        cell.detailTextLabel?.text = cellsTitle[indexPath.row].description
         return cell
     }
     
