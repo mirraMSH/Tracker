@@ -17,7 +17,6 @@
 		9A7249C42C6BE5B2006E9557 /* EmojiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7249C32C6BE5B2006E9557 /* EmojiCollectionViewCell.swift */; };
 		9A84ED3C2C65493500D2B8D4 /* TrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A84ED3B2C65493500D2B8D4 /* TrackerCollectionViewCell.swift */; };
 		9A9AF1BF2C4C233C00A601B0 /* UserTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9AF1BE2C4C233C00A601B0 /* UserTabBarViewController.swift */; };
-		9AA068412C7D0ACE00171073 /* CategoryViewModelStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA068402C7D0ACE00171073 /* CategoryViewModelStore.swift */; };
 		9AA068432C7D0B8000171073 /* PageViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA068422C7D0B8000171073 /* PageViewControllerFactory.swift */; };
 		9AA4BDA52C67989700FF115E /* TypeTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA4BDA42C67989700FF115E /* TypeTrackerViewController.swift */; };
 		9AA4BDA92C679A5000FF115E /* CreateTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA4BDA82C679A5000FF115E /* CreateTrackerViewController.swift */; };
@@ -46,7 +45,7 @@
 		9AD420BB2C7B36DF00D26B27 /* CategoriesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD420BA2C7B36DF00D26B27 /* CategoriesCollectionView.swift */; };
 		9AD420BD2C7B374A00D26B27 /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD420BC2C7B374A00D26B27 /* CategoryCollectionViewCell.swift */; };
 		9AD420BF2C7B379200D26B27 /* CategoriesCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD420BE2C7B379200D26B27 /* CategoriesCollectionViewModel.swift */; };
-		9AD420C12C7B37B900D26B27 /* CategoriesViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD420C02C7B37B900D26B27 /* CategoriesViewControllerModel.swift */; };
+		9AD420C12C7B37B900D26B27 /* CategoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD420C02C7B37B900D26B27 /* CategoriesViewModel.swift */; };
 		9AD420C32C7B37F600D26B27 /* CategoryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD420C22C7B37F600D26B27 /* CategoryCellViewModel.swift */; };
 		9AD420C52C7B386600D26B27 /* PlugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD420C42C7B386600D26B27 /* PlugView.swift */; };
 		9AD420C92C7B38FC00D26B27 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD420C82C7B38FC00D26B27 /* OnboardingView.swift */; };
@@ -81,7 +80,6 @@
 		9A7249C32C6BE5B2006E9557 /* EmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionViewCell.swift; sourceTree = "<group>"; };
 		9A84ED3B2C65493500D2B8D4 /* TrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCell.swift; sourceTree = "<group>"; };
 		9A9AF1BE2C4C233C00A601B0 /* UserTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTabBarViewController.swift; sourceTree = "<group>"; };
-		9AA068402C7D0ACE00171073 /* CategoryViewModelStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModelStore.swift; sourceTree = "<group>"; };
 		9AA068422C7D0B8000171073 /* PageViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewControllerFactory.swift; sourceTree = "<group>"; };
 		9AA4BDA42C67989700FF115E /* TypeTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTrackerViewController.swift; sourceTree = "<group>"; };
 		9AA4BDA82C679A5000FF115E /* CreateTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewController.swift; sourceTree = "<group>"; };
@@ -112,7 +110,7 @@
 		9AD420BA2C7B36DF00D26B27 /* CategoriesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesCollectionView.swift; sourceTree = "<group>"; };
 		9AD420BC2C7B374A00D26B27 /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		9AD420BE2C7B379200D26B27 /* CategoriesCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesCollectionViewModel.swift; sourceTree = "<group>"; };
-		9AD420C02C7B37B900D26B27 /* CategoriesViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewControllerModel.swift; sourceTree = "<group>"; };
+		9AD420C02C7B37B900D26B27 /* CategoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewModel.swift; sourceTree = "<group>"; };
 		9AD420C22C7B37F600D26B27 /* CategoryCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCellViewModel.swift; sourceTree = "<group>"; };
 		9AD420C42C7B386600D26B27 /* PlugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlugView.swift; sourceTree = "<group>"; };
 		9AD420C82C7B38FC00D26B27 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -279,10 +277,9 @@
 				9AD420B82C7B36A800D26B27 /* CategorisViewController.swift */,
 				9AD420BA2C7B36DF00D26B27 /* CategoriesCollectionView.swift */,
 				9AD420BE2C7B379200D26B27 /* CategoriesCollectionViewModel.swift */,
-				9AD420C02C7B37B900D26B27 /* CategoriesViewControllerModel.swift */,
+				9AD420C02C7B37B900D26B27 /* CategoriesViewModel.swift */,
 				9AD420C22C7B37F600D26B27 /* CategoryCellViewModel.swift */,
 				9AD420D72C7BCFED00D26B27 /* EditCategoryViewController.swift */,
-				9AA068402C7D0ACE00171073 /* CategoryViewModelStore.swift */,
 			);
 			path = CategorisViewController;
 			sourceTree = "<group>";
@@ -392,7 +389,6 @@
 				9AA7B9772C373DDB00DB0E81 /* TrackerViewController.swift in Sources */,
 				9A704F1B2C73C1D100EEE42B /* TrackerRecordStore.swift in Sources */,
 				9AD420C32C7B37F600D26B27 /* CategoryCellViewModel.swift in Sources */,
-				9AA068412C7D0ACE00171073 /* CategoryViewModelStore.swift in Sources */,
 				9A704F1D2C73EB7700EEE42B /* ScheduleSerializer.swift in Sources */,
 				9AD420AD2C7A6E9300D26B27 /* OnboardingViewController.swift in Sources */,
 				9AD420D82C7BCFED00D26B27 /* EditCategoryViewController.swift in Sources */,
@@ -429,7 +425,7 @@
 				9A7249C42C6BE5B2006E9557 /* EmojiCollectionViewCell.swift in Sources */,
 				9AD420BB2C7B36DF00D26B27 /* CategoriesCollectionView.swift in Sources */,
 				9AD420EC2C7BEE8100D26B27 /* UserDefaultBaked.swift in Sources */,
-				9AD420C12C7B37B900D26B27 /* CategoriesViewControllerModel.swift in Sources */,
+				9AD420C12C7B37B900D26B27 /* CategoriesViewModel.swift in Sources */,
 				9A84ED3C2C65493500D2B8D4 /* TrackerCollectionViewCell.swift in Sources */,
 				9AA7B9752C373DDB00DB0E81 /* SceneDelegate.swift in Sources */,
 				9AD420DA2C7BD00900D26B27 /* EditCategoryView.swift in Sources */,
