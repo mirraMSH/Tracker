@@ -8,84 +8,73 @@
 import UIKit
 import CoreData
 
-protocol TrackerRecordStoreDelegate: AnyObject {
-    func didUpdateRecords(_ records: Set<TrackerRecord>)
-}
-
 final class TrackerRecordStore: NSObject {
     
-    // MARK: - Properties
+    var trackerRecordsCoreData: [TrackerRecordCoreData] {
+        let fetchedRequest = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        guard let objects = try? context.fetch(fetchedRequest) else { return [] }
+        return objects
+    }
     
-    weak var delegate: TrackerRecordStoreDelegate?
+    private struct TrackerRecordStoreConstants {
+        static let entityName = "TrackerCoreData"
+        static let categorySectionNameKeyPath = "category"
+    }
+    
+    private enum TrackerRecordStoreError: Error {
+        case errorDecodingDate
+    }
+    
     private let context: NSManagedObjectContext
-    private let trackerStore = TrackerStore()
-    private var completedTrackers: Set<TrackerRecord> = []
     
-    // MARK: - Lifecycle
+    init(context: NSManagedObjectContext) {
+        self.context = context
+    }
     
     convenience override init() {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         self.init(context: context)
     }
     
-    init(context: NSManagedObjectContext) {
-        self.context = context
-        super.init()
-    }
-    
-    // MARK: - Func
-    
-    func add(_ newRecord: TrackerRecord) throws {
-        let trackerCoreData = try trackerStore.getTrackerCoreData(by: newRecord.trackerId)
+    func saveRecord(for trackerCoreData: TrackerCoreData, with date: Date) {
         let trackerRecordCoreData = TrackerRecordCoreData(context: context)
-        trackerRecordCoreData.recordId = newRecord.id.uuidString
-        trackerRecordCoreData.date = newRecord.date
         trackerRecordCoreData.tracker = trackerCoreData
-        try context.save()
-        completedTrackers.insert(newRecord)
-        delegate?.didUpdateRecords(completedTrackers)
+        trackerRecordCoreData.date = date
+        saveContext()
     }
     
-    func remove(_ record: TrackerRecord) throws {
-        let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
-        request.predicate = NSPredicate(
-            format: "%K == %@",
-            #keyPath(TrackerRecordCoreData.recordId), record.id.uuidString
-        )
-        let records = try context.fetch(request)
-        guard let recordToRemove = records.first else { return }
-        context.delete(recordToRemove)
-        try context.save()
-        completedTrackers.remove(record)
-        delegate?.didUpdateRecords(completedTrackers)
+    func removeRecord(for trackerCoreData: TrackerCoreData, with date: Date) {
+        trackerRecordsCoreData.forEach { trackerRecordCoreData in
+            guard trackerRecordCoreData.tracker == trackerCoreData,
+                  trackerRecordCoreData.date == date else { return }
+            context.delete(trackerRecordCoreData)
+            saveContext()
+        }
     }
     
-    func loadCompletedTrackers(by date: Date) throws {
-        let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
-        request.returnsObjectsAsFaults = false
-        request.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerRecordCoreData.date), date as NSDate)
-        let recordsCoreData = try context.fetch(request)
-        let records = try recordsCoreData.map { try makeTrackerRecord(from: $0) }
-        completedTrackers = Set(records)
-        delegate?.didUpdateRecords(completedTrackers)
+    func checkDate(from trackerCoreData: TrackerCoreData, with date: Date) -> Bool {
+        let fetchedRequest = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        fetchedRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerRecordCoreData.date), date as NSDate)
+        
+        guard let objects = try? context.fetch(fetchedRequest) else { return false }
+        
+        return objects.contains { $0.tracker == trackerCoreData }
     }
     
-    private func makeTrackerRecord(from coreData: TrackerRecordCoreData) throws -> TrackerRecord {
-        guard
-            let idString = coreData.recordId,
-            let id = UUID(uuidString: idString),
-            let date = coreData.date,
-            let trackerCoreData = coreData.tracker,
-            let tracker = try? trackerStore.makeTracker(from: trackerCoreData)
-        else { throw StoreError.decodeError }
-        return TrackerRecord(id: id, trackerId: tracker.id, date: date)
+    
+    func getRecord(from trackerRecordCoreData: TrackerRecordCoreData) throws -> TrackerRecord {
+        guard let date = trackerRecordCoreData.date else { throw TrackerRecordStoreError.errorDecodingDate }
+        return TrackerRecord(checkDate: date)
     }
-}
-
-//MARK: - Extension
-
-extension TrackerRecordStore {
-    enum StoreError: Error {
-        case decodeError
+    
+    private func saveContext() {
+        guard context.hasChanges else { return }
+        
+        do {
+            try context.save()
+        } catch {
+            let nserror = error as NSError
+            print("Unresolved error \(nserror), \(nserror.userInfo)")
+        }
     }
 }

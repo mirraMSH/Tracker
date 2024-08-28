@@ -8,11 +8,11 @@
 import UIKit
 
 struct TrackerCategory {
-    let id: UUID
-    let label: String
-    
-    init(id: UUID = UUID(), label: String) {
-        self.id = id
-        self.label = label
+    let title: String
+}
+
+extension TrackerCategory: Equatable {
+    static func == (lrh: TrackerCategory, rhs: TrackerCategory) -> Bool {
+        lrh.title == rhs.title
     }
 }
