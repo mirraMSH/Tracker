@@ -7,138 +7,113 @@
 
 import UIKit
 
-protocol CategoriesViewControllerDelegate: AnyObject {
-    func setCategory(categoryCoreData: TrackerCategoryCoreData?)
+protocol CreateCategoryVCDelegate {
+    func createdCategory(_ category: TrackerCategory)
 }
 
-final class CategoriesViewController: UIViewController {
+class CreateCategoryVC: UIViewController {
+    private let colors = Colors()
+    var delegate: CreateCategoryVCDelegate?
     
-    // MARK: - public properties
-    weak var delegate: CategoriesViewControllerDelegate?
-    var selectedCategoryTitle: String?
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .ypBlack
+        label.text = "Новая категория"
+        label.font = UIFont.ypMediumSize16
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
-    // MARK: - private properties
-    private var viewModel: CategoriesViewModelProtocol
-    
-    private struct CategoryViewControllerConstants {
-        static let title = "Категория"
-        static let deleteActionSheetMessage = "Эта категория точно не нужна?"
-        static let deleteActionTitle = "Удалить"
-        static let cancelActionTitle = "Отмена"
+    private lazy var textField: UITextField = {
+        let textField = UITextField()
+        textField.indent(size: 10)
+        textField.placeholder = "Введите название категории"
+        textField.textColor = .ypBlack
+        textField.backgroundColor = .backgroundColor
+        textField.layer.cornerRadius = 16
+        textField.font = .systemFont(ofSize: 17)
+        textField.translatesAutoresizingMaskIntoConstraints = false
         
-        static let errorAlertTitle = "Ошибка"
-        static let errorAlertMessage = "Нельзя удалить выбранную категорию"
-        static let actionTitle = "OK"
+        UITextField.appearance().clearButtonMode = .whileEditing
+        textField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        return textField
+    }()
+    
+    private lazy var addCategoryButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Готово", for: .normal)
+        button.setTitleColor(.ypWhite, for: .normal)
+        button.backgroundColor = .gray
+        button.isEnabled = true
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(addCategoryButtonAction), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private let trackerCategoryStore = TrackerCategoryStore()
+    
+    @objc func textFieldChanged() {
+        if textField.text != "" {
+            addCategoryButton.backgroundColor = .ypBlack
+            addCategoryButton.isEnabled = true
+        } else {
+            addCategoryButton.backgroundColor = .gray
+            addCategoryButton.isEnabled = false
+        }
     }
     
-    // MARK: UI
-    private var сategoriesView: CategoriesCollectionView!
-
-    //MARK: - initialization
-    init(viewModel:CategoriesViewModelProtocol, delegate: CategoriesViewControllerDelegate) {
-        self.delegate = delegate
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+    @objc func addCategoryButtonAction() {
+        if let categoryName = textField.text {
+            let category = TrackerCategory(title: categoryName, trackers: [])
+            try? trackerCategoryStore.addNewTrackerCategory(category)
+            delegate?.createdCategory(category)
+            dismiss(animated: true)
+        }
     }
     
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - override
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let categoriesViewModel = viewModel.categoriesViewModel(with: selectedCategoryTitle)
-        
-        сategoriesView = CategoriesCollectionView(
-            frame: view.bounds,
-            delegate: self,
-            viewModel: categoriesViewModel
-        )
-        setupView()
+        view.backgroundColor = .ypBG
+        addSubviews()
+        setupLayout()
     }
     
-    // MARK: - private methods
-    private func setupView() {
-        view.backgroundColor = .clear
-        title = CategoryViewControllerConstants.title
-        addScreenView(view: сategoriesView)
+    private func addSubviews() {
+        view.addSubview(titleLabel)
+        view.addSubview(textField)
+        view.addSubview(addCategoryButton)
     }
     
-    deinit {
-        print("CategoryViewController deinit")
-    }
-}
-
-// MARK: CategoriesViewDelegate
-extension CategoriesViewController: CategoriesCollectionViewDelegate {
-    
-    func showDeleteActionSheet(deleteCategory: TrackerCategoryCoreData) {
-           var deleteActionSheet: UIAlertController {
-               let message = CategoryViewControllerConstants.deleteActionSheetMessage
-               let alertController = UIAlertController(
-                   title: nil, message: message,
-                   preferredStyle: .actionSheet
-               )
-               let deleteAction = UIAlertAction(
-                   title: CategoryViewControllerConstants.deleteActionTitle,
-                   style: .destructive) { [weak self] _ in
-                       guard let self = self else { return }
-                       self.viewModel.deleteCategory(deleteCategory)
-                       self.сategoriesView.reloadCollectionView()
-                   }
-               let cancelAction = UIAlertAction(title: CategoryViewControllerConstants.cancelActionTitle, style: .cancel)
-               alertController.addAction(deleteAction)
-               alertController.addAction(cancelAction)
-               return alertController
-           }
-           
-           let viewController = deleteActionSheet
-           present(viewController, animated: true)
-       }
-    
-    
-    func showErrorAlert() {
-        var errorAlert: UIAlertController {
-            let title = CategoryViewControllerConstants.errorAlertTitle
-            let message = CategoryViewControllerConstants.errorAlertMessage
-            let alertController = UIAlertController(
-                title: title, message: message,
-                preferredStyle: .alert
-            )
-            let okAction = UIAlertAction(title: CategoryViewControllerConstants.actionTitle, style: .default)
-            alertController.addAction(okAction)
-            return alertController
-        }
-        
-        let viewController = errorAlert
-        present(viewController, animated: true)
-    }
-    
-    func selectedCategory(categoryCoreData: TrackerCategoryCoreData?) {
-        delegate?.setCategory(categoryCoreData: categoryCoreData)
-    }
-    
-    func showEditCategoryViewController(type: EditCategory, editCategoryString: String?, at indexPath: IndexPath?) {
-        let viewController = createEditCategoryViewController(type: type, editCategoryString: editCategoryString, at: indexPath)
-        present(viewController, animated: true)
+    private func setupLayout() {
+        NSLayoutConstraint.activate([
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 27),
+            
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
+            textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            textField.heightAnchor.constraint(equalToConstant: 75),
+            
+            
+            addCategoryButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
+            addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            addCategoryButton.heightAnchor.constraint(equalToConstant: 60),
+       ])
     }
 }
 
-// MARK: create CategoryViewController
-extension CategoriesViewController {
-    private func createEditCategoryViewController(type: EditCategory, editCategoryString: String?, at indexPath: IndexPath?) -> UINavigationController {
-        let viewController = EditCategoryViewController()
-        
-        viewController.updateWithNewCategory = { [weak self] in
-            guard let self else { return }
-            self.сategoriesView.reloadCollectionView()
-        }
-        
-        viewController.setEditType(type: type, editCategoryString: editCategoryString, at: indexPath)
-        let navigationViewController = UINavigationController(rootViewController: viewController)
-        return navigationViewController
+extension CreateCategoryVC: UITextFieldDelegate {
+    
+    internal func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return textField.resignFirstResponder()
     }
+    
+    internal override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
 }
+
+

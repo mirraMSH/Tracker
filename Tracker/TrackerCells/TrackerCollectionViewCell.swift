@@ -7,194 +7,160 @@
 
 import UIKit
 
-protocol TrackerCollectionViewCellDelegate: AnyObject {
-    func checkTracker(id: String?, completed: Bool)
+protocol TrackersCollectionViewCellDelegate: AnyObject {
+    func completedTracker(id: UUID)
 }
 
-final class TrackerCollectionViewCell: UICollectionViewCell {
-    static let identifier = "TrackerCollectionViewCell"
+final class TrackersCollectionViewCell: UICollectionViewCell {
     
-    weak var delegate: TrackerCollectionViewCellDelegate?
+    static let identifier = "trackersCollectionViewCell"
     
-    private struct TrackerCollectionViewCellConstants {
-        static let emojiLabelSide: CGFloat = 30
-        static let checkTrackerButtonSide: CGFloat = 34
-        static let offset: CGFloat = 12
+    public weak var delegate: TrackersCollectionViewCellDelegate?
+    public var menuView: UIView {
+        return trackerView
     }
+    private let limitNumberOfCharacters = 38
+    private var isCompletedToday: Bool = false
+    private var trackerId: UUID? = nil
     
-    private var completedTracker = false {
-        didSet {
-            if completedTracker {
-                daysCount += 1
-            } else {
-                daysCount -= 1
-            }
-        }
-    }
-    
-    private var idTracker: String?
-    private var daysCount: Int = 0
-    
-    // MARK: UI
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        return stackView
+    private lazy var trackerView: UIView = {
+        let trackerView = UIView()
+        trackerView.layer.cornerRadius = 16
+        trackerView.translatesAutoresizingMaskIntoConstraints = false
+        return trackerView
     }()
     
-    private lazy var nameAndEmojiView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .ypColorSelection2
-        view.layer.cornerRadius = Constants.cornerRadius
-        return view
+    private lazy var pinImageView: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(named: "pinSquare")
+        image.isHidden = false
+        image.translatesAutoresizingMaskIntoConstraints = false
+        return image
     }()
     
-    private lazy var daysPlusTrackerButtonView: UIView = {
-        let view = UIView()
-        return view
+    private lazy var emojiView: UIView = {
+        let emojiView = UIView()
+        emojiView.backgroundColor = UIColor(white: 1, alpha: 0.5)
+        emojiView.layer.cornerRadius = 12
+        emojiView.translatesAutoresizingMaskIntoConstraints = false
+        return emojiView
     }()
     
     private lazy var emojiLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = .white.withAlphaComponent(0.3)
-        label.clipsToBounds = true
-        label.textAlignment = .center
-        return label
+        let emojiLabel = UILabel()
+        emojiLabel.translatesAutoresizingMaskIntoConstraints = false
+        return emojiLabel
     }()
     
-    private lazy var nameTrackerLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        label.textColor = .white
-        label.font = UIFont.ypMediumSize12
-        return label
+    private lazy var trackerNameLabel: UILabel = {
+        let trackerNameLabel = UILabel()
+        trackerNameLabel.font = .ypMediumSize12
+        trackerNameLabel.numberOfLines = 2
+        trackerNameLabel.text = "Название трекера "
+        trackerNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        return trackerNameLabel
     }()
     
-    private lazy var daysLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 1
-        label.font = UIFont.ypMediumSize12
-        return label
+    private lazy var resultLabel: UILabel = {
+        let resultLabel = UILabel()
+        resultLabel.text = "0 дней"
+        resultLabel.translatesAutoresizingMaskIntoConstraints = false
+        return resultLabel
     }()
     
-    private lazy var checkTrackerButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        let image = getButtonImage(completedTracker)
-        button.setImage(image, for: .normal)
-        button.tintColor = .ypWhite
-        button.addTarget(self, action: #selector(checkTrackerButtonTapped), for: .touchUpInside)
-        return button
+    private lazy var checkButton: UIButton = {
+        let checkButton = UIButton()
+        let image = UIImage(named: "plus")
+        checkButton.setImage(image, for: .normal)
+        checkButton.addTarget(self, action: #selector(didTapCheckButton), for: .touchUpInside)
+        checkButton.backgroundColor = .ypWhite
+        checkButton.tintColor = .ypWhite
+        checkButton.layer.cornerRadius = 17
+        checkButton.translatesAutoresizingMaskIntoConstraints = false
+        return checkButton
     }()
     
-    // MARK: Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setupCell()
-        activateConstraints()
+        contentView.addSubview(trackerView)
+        trackerView.addSubview(pinImageView)
+        trackerView.addSubview(emojiView)
+        emojiView.addSubview(emojiLabel)
+        trackerView.addSubview(trackerNameLabel)
+        contentView.addSubview(resultLabel)
+        contentView.addSubview(checkButton)
+        
+        NSLayoutConstraint.activate([
+            trackerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            trackerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            trackerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -58),
+            trackerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+            pinImageView.heightAnchor.constraint(equalToConstant: 12),
+            pinImageView.widthAnchor.constraint(equalToConstant: 8),
+            pinImageView.topAnchor.constraint(equalTo: trackerView.topAnchor, constant: 18),
+            pinImageView.trailingAnchor.constraint(equalTo: trackerView.trailingAnchor, constant: -12),
+            
+            emojiView.heightAnchor.constraint(equalToConstant: 24),
+            emojiView.widthAnchor.constraint(equalToConstant: 24),
+            emojiView.topAnchor.constraint(equalTo: trackerView.topAnchor, constant: 12),
+            emojiView.leadingAnchor.constraint(equalTo: trackerView.leadingAnchor, constant: 12),
+            
+            emojiLabel.centerYAnchor.constraint(equalTo: emojiView.centerYAnchor) ,
+            emojiLabel.centerYAnchor.constraint(equalTo: emojiView.centerYAnchor),
+            
+            trackerNameLabel.topAnchor.constraint(equalTo: trackerView.topAnchor, constant: 44),
+            trackerNameLabel.trailingAnchor.constraint(equalTo: trackerView.trailingAnchor, constant: -12),
+            trackerNameLabel.leadingAnchor.constraint(equalTo: trackerView.leadingAnchor, constant: 12),
+            trackerNameLabel.heightAnchor.constraint(equalToConstant: 34),
+            
+            checkButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            checkButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            checkButton.heightAnchor.constraint(equalToConstant: 34),
+            checkButton.widthAnchor.constraint(equalToConstant: 34 ),
+            
+            resultLabel.centerYAnchor.constraint(equalTo: checkButton.centerYAnchor),
+            resultLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12)
+        ])
     }
     
-    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Public methods
-    func config(tracker: Tracker, completedDaysCount: Int?, completed: Bool) {
-        emojiLabel.text = tracker.emoji
-        nameTrackerLabel.text = tracker.name
-        nameAndEmojiView.backgroundColor = tracker.color
-        checkTrackerButton.backgroundColor = getBackgroundButtonColor(color: tracker.color)
-        idTracker = tracker.id
-        completedTracker = completed
-        
-        let image = getButtonImage(completedTracker)
-        checkTrackerButton.setImage(image, for: .normal)
-        let backgroundColor = getBackgroundButtonColor(color: checkTrackerButton.backgroundColor)
-        checkTrackerButton.backgroundColor = backgroundColor
-        
-        guard let completedDaysCount else { return }
-        daysCount = completedDaysCount
-        setDaysLabel()
+    @objc private func didTapCheckButton() {
+        guard let id = trackerId else {
+            print("Id not set")
+            return
+        }
+        delegate?.completedTracker(id: id)
     }
     
-    func enabledCheckTrackerButton(enabled: Bool) {
-        checkTrackerButton.isEnabled = enabled ? false : true
-    }
-    
-    // MARK: Private methods
-    private func setupCell() {
-        contentView.layer.cornerRadius = Constants.cornerRadius
-        contentView.clipsToBounds = true
-        
-        contentView.addSubViews(stackView)
-        stackView.addArrangedSubview(nameAndEmojiView)
-        stackView.addArrangedSubview(daysPlusTrackerButtonView)
-        
-        nameAndEmojiView.addSubViews(emojiLabel,nameTrackerLabel)
-        daysPlusTrackerButtonView.addSubViews(daysLabel, checkTrackerButton)
-    }
-    
-    private func activateConstraints() {
-        emojiLabel.layer.cornerRadius = TrackerCollectionViewCellConstants.emojiLabelSide / 2
-        checkTrackerButton.layer.cornerRadius = TrackerCollectionViewCellConstants.checkTrackerButtonSide / 2
-        
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            
-            emojiLabel.topAnchor.constraint(equalTo: nameAndEmojiView.topAnchor, constant: TrackerCollectionViewCellConstants.offset),
-            emojiLabel.leftAnchor.constraint(equalTo: nameAndEmojiView.leftAnchor, constant: TrackerCollectionViewCellConstants.offset),
-            emojiLabel.heightAnchor.constraint(equalToConstant: TrackerCollectionViewCellConstants.emojiLabelSide),
-            emojiLabel.widthAnchor.constraint(equalToConstant: TrackerCollectionViewCellConstants.emojiLabelSide),
-            
-            nameTrackerLabel.bottomAnchor.constraint(equalTo: nameAndEmojiView.bottomAnchor, constant: -TrackerCollectionViewCellConstants.offset),
-            nameTrackerLabel.leftAnchor.constraint(equalTo: nameAndEmojiView.leftAnchor, constant: TrackerCollectionViewCellConstants.offset),
-            nameTrackerLabel.rightAnchor.constraint(equalTo: nameAndEmojiView.rightAnchor, constant: -TrackerCollectionViewCellConstants.offset),
-            
-            checkTrackerButton.widthAnchor.constraint(equalToConstant: TrackerCollectionViewCellConstants.checkTrackerButtonSide),
-            checkTrackerButton.heightAnchor.constraint(equalToConstant: TrackerCollectionViewCellConstants.checkTrackerButtonSide),
-            checkTrackerButton.rightAnchor.constraint(equalTo: daysPlusTrackerButtonView.rightAnchor, constant: -TrackerCollectionViewCellConstants.offset),
-            checkTrackerButton.topAnchor.constraint(equalTo: daysPlusTrackerButtonView.topAnchor, constant: 9),
-            checkTrackerButton.bottomAnchor.constraint(equalTo: daysPlusTrackerButtonView.bottomAnchor),
-            
-            daysLabel.leftAnchor.constraint(equalTo: daysPlusTrackerButtonView.leftAnchor, constant: TrackerCollectionViewCellConstants.offset),
-            daysLabel.rightAnchor.constraint(equalTo: checkTrackerButton.leftAnchor),
-            daysLabel.centerYAnchor.constraint(equalTo: checkTrackerButton.centerYAnchor)
-        ])
-    }
-    
-    private func getButtonImage(_ check: Bool) -> UIImage? {
-        let doneImage = UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysTemplate)
-        let plusImage = UIImage(systemName: "plus")?.withRenderingMode(.alwaysTemplate)
-        return check ? doneImage : plusImage
-    }
-    
-    private func getBackgroundButtonColor(color: UIColor?) -> UIColor? {
-        completedTracker ? color?.withAlphaComponent(0.3) : color?.withAlphaComponent(1)
-    }
-    
-    @objc
-    private func checkTrackerButtonTapped() {
-        completedTracker = !completedTracker
-        let image = getButtonImage(completedTracker)
-        checkTrackerButton.setImage(image, for: .normal)
-        let backgroundColor = getBackgroundButtonColor(color: checkTrackerButton.backgroundColor)
-        checkTrackerButton.backgroundColor = backgroundColor
-        setDaysLabel()
-        delegate?.checkTracker(id: self.idTracker, completed: completedTracker)
-    }
-    
-    private func setDaysLabel() {
-        let stringDay = String.getDayAddition(int: daysCount)
-        daysLabel.text = "\(daysCount) \(stringDay)"
+    func configure(
+        _ id: UUID,
+        name: String,
+        color: UIColor,
+        emoji: String,
+        isCompleted: Bool,
+        isEnabled: Bool,
+        completedCount: Int,
+        pinned: Bool
+    ) {
+        trackerId = id
+        trackerNameLabel.text = name
+        trackerView.backgroundColor = color
+        checkButton.backgroundColor = color
+        emojiLabel.text = emoji
+        pinImageView.isHidden = !pinned
+        isCompletedToday = isCompleted
+        checkButton.setImage(isCompletedToday ? UIImage(systemName: "checkmark")! : UIImage(systemName: "plus")!, for: .normal)
+        if isCompletedToday == true {
+            checkButton.alpha = 0.5
+        } else {
+            checkButton.alpha = 1
+        }
+        checkButton.isEnabled = isEnabled
+        resultLabel.text = String.localizedStringWithFormat(NSLocalizedString("numberOfDay", comment: "Число дней"), completedCount)
     }
 }

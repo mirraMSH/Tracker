@@ -7,12 +7,19 @@
 
 import UIKit
 
-struct TrackerCategory {
+struct TrackerCategory: Hashable {
     let title: String
-}
-
-extension TrackerCategory: Equatable {
-    static func == (lrh: TrackerCategory, rhs: TrackerCategory) -> Bool {
-        lrh.title == rhs.title
-    }
+    let trackers: [Tracker]
+    
+   func visibleTrackers(filterString: String, pin: Bool?) -> [Tracker] {
+       if filterString.isEmpty {
+           return pin == nil ? trackers : trackers.filter { $0.pinned == pin }
+       } else {
+           return pin == nil ? trackers
+               .filter { $0.name.lowercased().contains(filterString.lowercased()) }
+           : trackers
+               .filter { $0.name.lowercased().contains(filterString.lowercased()) }
+               .filter { $0.pinned == pin }
+       }
+   }
 }

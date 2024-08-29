@@ -1,0 +1,22 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Мария Шагина on 29.08.2024.
+  
+*/
+
+"trackersTitle" = "Trackers";
+"statistics" = "Statistics";
+"filters" = "Filters";
+"stubTitle" = "What will we track?";
+"nothingFound" = "Nothing found";
+"search" = "Search";
+"cancel" = "Cancel";
+"habit" = "Habit";
+"irregularEvent" = "Irregular Event";
+"categoryTrans" = "Category";
+"scheduleTrans" = "Schedule";
+"createTrans" = "Create";
+"enterTrackerName" = "Enter tracker name";
+"colorTrans" = "Color";
