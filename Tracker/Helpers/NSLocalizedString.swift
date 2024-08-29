@@ -24,5 +24,4 @@ enum NSLS {
     static let transHabit = NSLocalizedString("habit", tableName: "LocalizableStrings", comment: "habit")
     static let colorTrans = NSLocalizedString("colorTrans", tableName: "LocalizableStrings", comment: "color")
     static let statistics = NSLocalizedString("statistics", tableName: "LocalizableStrings", comment: "statistics")
-    
 }

@@ -31,6 +31,8 @@ protocol TrackerStoreDelegate: AnyObject {
 }
 
 class TrackerStore: NSObject {
+    
+    // MARK: - properties
     weak var delegate: TrackerStoreDelegate?
     
     private let context: NSManagedObjectContext
@@ -50,6 +52,7 @@ class TrackerStore: NSObject {
         }
     }
     
+    // MARK: - array
     var trackers: [Tracker] {
         guard let objects = self.fetchedResultsController.fetchedObjects, let trackers = try? objects.map({ try self.tracker(from: $0)})
         else { return [] }
@@ -74,6 +77,7 @@ class TrackerStore: NSObject {
         self.fetchedResultsController = controller
     }
     
+    // MARK: - func
     func addNewTracker(_ tracker: Tracker) throws {
         let trackerCoreData = TrackerCoreData(context: context)
         updateExistingTracker(trackerCoreData, with: tracker)
@@ -161,6 +165,7 @@ class TrackerStore: NSObject {
     }
 }
 
+// MARK: - NSFetchedResultsControllerDelegate
 extension TrackerStore: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(
         _ controller: NSFetchedResultsController<NSFetchRequestResult>) {

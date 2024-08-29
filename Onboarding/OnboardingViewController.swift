@@ -8,11 +8,13 @@ import UIKit
 
 class OnboardingViewController: UIPageViewController {
     
+    // MARK: - properties
     let analyticsService = AnalyticsService()
     private lazy var pages: [UIViewController] = {
         return [blueVC, redVC]
     }()
     
+    // MARK: - UI
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.numberOfPages = pages.count
@@ -85,6 +87,7 @@ class OnboardingViewController: UIPageViewController {
         return button
     }()
     
+    // MARK: - override methods
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource = self
@@ -99,6 +102,7 @@ class OnboardingViewController: UIPageViewController {
         addPageControl()
     }
     
+    // MARK: - methods
     private func addBlueVC() {
         blueVC.view.addSubview(blueVCLabel)
         blueVC.view.addSubview(blueVCEnterButton)
@@ -147,7 +151,7 @@ class OnboardingViewController: UIPageViewController {
         UserDefaults.standard.set(true, forKey: "isOnbordingShown")
     }
 }
-   
+
 extension OnboardingViewController: UIPageViewControllerDataSource {
     func pageViewController(
         _ pageViewController: UIPageViewController,
@@ -178,6 +182,7 @@ extension OnboardingViewController: UIPageViewControllerDataSource {
     }
 }
 
+// MARK: - UIPageViewControllerDelegate
 extension OnboardingViewController: UIPageViewControllerDelegate {
     func pageViewController(
         _ pageViewController: UIPageViewController,

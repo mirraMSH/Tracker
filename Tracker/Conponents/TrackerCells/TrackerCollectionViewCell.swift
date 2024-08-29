@@ -13,6 +13,7 @@ protocol TrackersCollectionViewCellDelegate: AnyObject {
 
 final class TrackersCollectionViewCell: UICollectionViewCell {
     
+    // MARK: - properties
     static let identifier = "trackersCollectionViewCell"
     
     public weak var delegate: TrackersCollectionViewCellDelegate?
@@ -23,6 +24,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     private var isCompletedToday: Bool = false
     private var trackerId: UUID? = nil
     
+    // MARK: - UI
     private lazy var trackerView: UIView = {
         let trackerView = UIView()
         trackerView.layer.cornerRadius = 16
@@ -80,6 +82,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         return checkButton
     }()
     
+    // MARK: - init
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -125,10 +128,12 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         ])
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - actions
     @objc private func didTapCheckButton() {
         guard let id = trackerId else {
             print("Id not set")
@@ -137,6 +142,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         delegate?.completedTracker(id: id)
     }
     
+    // MARK: - methods
     func configure(
         _ id: UUID,
         name: String,

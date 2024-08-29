@@ -5,8 +5,8 @@
 //  Created by Мария Шагина on 29.08.2024.
 //
 
-import XCTest
 import SnapshotTesting
+import XCTest
 @testable import Tracker
 
 

@@ -100,7 +100,7 @@ class CreateCategoryVC: UIViewController {
             addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             addCategoryButton.heightAnchor.constraint(equalToConstant: 60),
-       ])
+        ])
     }
 }
 
@@ -115,5 +115,3 @@ extension CreateCategoryVC: UITextFieldDelegate {
     }
     
 }
-
-

@@ -12,6 +12,7 @@ class CategoryView: UIViewController {
     private let viewModel: CategoryViewModel
     private let colors = Colors()
     
+    // MARK: UI
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .ypBlack
@@ -62,16 +63,19 @@ class CategoryView: UIViewController {
         return tableView
     }()
     
+    // MARK: - init
     init(delegate: CategoryListViewModelDelegate?, selectedCategory: TrackerCategory?) {
         viewModel = CategoryViewModel(delegate: delegate, selectedCategory: selectedCategory)
         super.init(nibName: nil, bundle: nil)
         viewModel.onChange = self.tableView.reloadData
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - override method
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBG
@@ -79,6 +83,7 @@ class CategoryView: UIViewController {
         setupLayout()
     }
     
+    // MARK: - methods
     private func addSubviews() {
         view.addSubview(titleLabel)
         view.addSubview(imageView)
@@ -112,13 +117,6 @@ class CategoryView: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
-    }
-    
-    @objc
-    private func addCategoryButtonAction() {
-        let createCategoryVC = CreateCategoryVC()
-        createCategoryVC.delegate = self
-        present(createCategoryVC, animated: true)
     }
     
     private func actionSheet(categoryToDelete: TrackerCategory) {
@@ -157,8 +155,17 @@ class CategoryView: UIViewController {
             return self.makeContextMenu(indexPath)
         })
     }
+    
+    // MARK: actions
+    @objc
+    private func addCategoryButtonAction() {
+        let createCategoryVC = CreateCategoryVC()
+        createCategoryVC.delegate = self
+        present(createCategoryVC, animated: true)
+    }
 }
 
+// MARK: - UITableViewDataSource
 extension CategoryView: UITableViewDataSource {
     func tableView(
         _ tableView: UITableView,
@@ -206,6 +213,7 @@ extension CategoryView: UITableViewDataSource {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension CategoryView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75

@@ -25,6 +25,7 @@ class TrackerViewController: UIViewController {
     private var widthAnchor: NSLayoutConstraint?
     private var selectedFilter: Filter?
     
+    // MARK: UI
     private lazy var emptyListImage: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -70,7 +71,7 @@ class TrackerViewController: UIViewController {
         searchTextField.placeholder = NSLS.search
         searchTextField.textColor = .ypBlack
         searchTextField.font = .systemFont(ofSize: 17)
-       searchTextField.backgroundColor = .searchColor
+        searchTextField.backgroundColor = .searchColor
         searchTextField.layer.cornerRadius = 10
         searchTextField.indent(size: 30)
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -120,6 +121,7 @@ class TrackerViewController: UIViewController {
         return collectionView
     }()
     
+    // MARK: override methods
     override func viewDidLoad() {
         super.viewDidLoad()
         analyticsService.report(event: .open, params: ["Screen" : "Main"])
@@ -142,6 +144,8 @@ class TrackerViewController: UIViewController {
         analyticsService.report(event: .close, params: ["Screen" : "Main"])
         print("Event: close")
     }
+    
+    // MARK: methods
     private func makeNavBar() {
         if let navBar = navigationController?.navigationBar {
             title = NSLS.titleTrackers
@@ -166,6 +170,7 @@ class TrackerViewController: UIViewController {
         }
     }
     
+    // MARK:  actions
     @objc func dateChanged(_ sender: UIDatePicker) {
         let components = Calendar.current.dateComponents([.weekday], from: sender.date)
         if let day = components.weekday {
@@ -198,6 +203,7 @@ class TrackerViewController: UIViewController {
         present(filtersVC, animated: true)
     }
     
+    // MARK: UI methods
     private func addSubviews() {
         view.addSubview(emptyListImage)
         view.addSubview(label)
@@ -356,6 +362,7 @@ class TrackerViewController: UIViewController {
     }
 }
 
+// MARK:
 extension TrackerViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -388,7 +395,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         } else {
             tracker = visibleCategories[indexPath.section - 1].visibleTrackers(filterString: searchText, pin: false)[indexPath.row]
         }
-         
+        
         let isCompleted = completedTrackers.contains(where: { record in
             record.idTracker == tracker.id &&
             record.date.yearMonthDayComponents == datePicker.date.yearMonthDayComponents
@@ -411,8 +418,8 @@ extension TrackerViewController: UICollectionViewDataSource {
     }
 }
 
+// MARK:
 extension TrackerViewController: UICollectionViewDelegateFlowLayout {
-    
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -477,6 +484,7 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+// MARK:
 extension TrackerViewController: CreateNewTypeCategoryDelegate {
     
     func createTracker(
@@ -500,6 +508,7 @@ extension TrackerViewController: CreateNewTypeCategoryDelegate {
     }
 }
 
+// MARK: UpdateUI
 extension TrackerViewController {
     
     @objc func textFieldChanged() {
@@ -510,9 +519,10 @@ extension TrackerViewController {
         updateCategories(with: trackerCategoryStore.predicateFetch(nameTracker: searchText))
     }
     
-
+    
 }
 
+// MARK: TrackersCollectionViewCellDelegate
 extension TrackerViewController: TrackersCollectionViewCellDelegate {
     
     func completedTracker(id: UUID) {
@@ -532,6 +542,7 @@ extension TrackerViewController: TrackersCollectionViewCellDelegate {
     }
 }
 
+// MARK: UITextFieldDelegate
 extension TrackerViewController: UITextFieldDelegate {
     
     internal func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -542,7 +553,6 @@ extension TrackerViewController: UITextFieldDelegate {
         self.view.endEditing(true)
     }
     
-    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         widthAnchor?.constant = 85
     }
@@ -552,6 +562,7 @@ extension TrackerViewController: UITextFieldDelegate {
     }
 }
 
+// MARK: Stores Delegate
 extension TrackerViewController: TrackerCategoryStoreDelegate {
     
     func store(_ store: TrackerCategoryStore, didUpdate update: TrackerCategoryStoreUpdate) {
@@ -575,18 +586,19 @@ extension TrackerViewController: TrackerRecordStoreDelegate {
     }
 }
 
+// MARK: UICollectionViewDelegate
 extension TrackerViewController: UICollectionViewDelegate {
     func collectionView(
-         _ collectionView: UICollectionView,
-         contextMenuConfigurationForItemAt indexPath: IndexPath,
-         point: CGPoint
-     ) -> UIContextMenuConfiguration? {
-         let identifier = "\(indexPath.row):\(indexPath.section)" as NSString
-         return UIContextMenuConfiguration(identifier: identifier, previewProvider: nil) {
-             suggestedActions in
-              return self.makeContextMenu(indexPath)
-         }
-     }
+        _ collectionView: UICollectionView,
+        contextMenuConfigurationForItemAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        let identifier = "\(indexPath.row):\(indexPath.section)" as NSString
+        return UIContextMenuConfiguration(identifier: identifier, previewProvider: nil) {
+            suggestedActions in
+            return self.makeContextMenu(indexPath)
+        }
+    }
     
     func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
         guard let identifier = configuration.identifier as? String else { return nil }
@@ -597,13 +609,14 @@ extension TrackerViewController: UICollectionViewDelegate {
               let row = Int(rowString),
               let section = Int(sectionString) else { return nil }
         let indexPath = IndexPath(row: row, section: section)
-                
+        
         guard let cell = collectionView.cellForItem(at: indexPath) as? TrackersCollectionViewCell else { return nil }
         
         return UITargetedPreview(view: cell.menuView)
     }
 }
 
+// MARK: FiltersVCDelegate
 extension TrackerViewController: FiltersVCDelegate {
     func filterSelected(filter: Filter) {
         selectedFilter = filter
@@ -623,8 +636,9 @@ extension TrackerViewController: FiltersVCDelegate {
     }
 }
 
+// MARK: extension UIDatePicker
 extension UIDatePicker {
-
+    
     var textColor: UIColor? {
         set {
             setValue(newValue, forKeyPath: "textColor")
@@ -633,5 +647,4 @@ extension UIDatePicker {
             return value(forKeyPath: "textColor") as? UIColor
         }
     }
-
 }

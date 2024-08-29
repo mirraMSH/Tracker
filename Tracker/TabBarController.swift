@@ -28,6 +28,6 @@ class TabBarController: UITabBarController {
         statisticsViewController.title = NSLS.statistics
         let tabBarController = TabBarController()
         tabBarController.viewControllers = [trackersViewController, statisticsViewController]
-       return tabBarController
+        return tabBarController
     }
 }

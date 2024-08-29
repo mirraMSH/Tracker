@@ -20,10 +20,10 @@ final class CategoryCollectionViewCell: UITableViewCell {
     }()
     
     lazy var view: UIView = {
-       let view = UIView()
+        let view = UIView()
         view.backgroundColor = .backgroundColor
         view.translatesAutoresizingMaskIntoConstraints = false
-       return view
+        return view
     }()
     
     lazy var checkmarkImage: UIImageView = {
@@ -64,6 +64,7 @@ final class CategoryCollectionViewCell: UITableViewCell {
         ])
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

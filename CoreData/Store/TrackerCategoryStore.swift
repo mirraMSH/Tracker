@@ -33,6 +33,7 @@ protocol TrackerCategoryStoreDelegate: AnyObject {
 class TrackerCategoryStore: NSObject {
     weak var delegate: TrackerCategoryStoreDelegate?
     
+    // MARK: - properties
     private let context: NSManagedObjectContext
     private var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData>!
     private var insertedIndexes: IndexSet?
@@ -50,6 +51,7 @@ class TrackerCategoryStore: NSObject {
         }
     }
     
+    // MARK: - array
     var trackerCategories: [TrackerCategory] {
         guard let objects = self.fetchedResultsController.fetchedObjects,
               let trackerCategories = try? objects.map({ try self.trackerCategory(from: $0)})
@@ -75,6 +77,7 @@ class TrackerCategoryStore: NSObject {
         self.fetchedResultsController = controller
     }
     
+    // MARK: - methods
     func addNewTrackerCategory(_ trackerCategory: TrackerCategory) throws {
         let trackerCategoryCoreData = TrackerCategoryCoreData(context: context)
         updateExistingTrackerCategory(trackerCategoryCoreData, with: trackerCategory)
@@ -173,6 +176,7 @@ class TrackerCategoryStore: NSObject {
     }
 }
 
+// MARK: - extention
 extension TrackerCategoryStore {
     func predicateFetch(nameTracker: String) -> [TrackerCategory] {
         if nameTracker.isEmpty {
@@ -189,6 +193,7 @@ extension TrackerCategoryStore {
     }
 }
 
+// MARK: - NSFetchedResultsControllerDelegate
 extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(
         _ controller: NSFetchedResultsController<NSFetchRequestResult>) {

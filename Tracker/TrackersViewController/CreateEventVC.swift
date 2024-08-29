@@ -37,6 +37,8 @@ protocol CreateEventVCDelegate: AnyObject {
 }
 
 class CreateEventVC: UIViewController {
+    
+    // MARK: - properties and arrays
     private let colors = Colors()
     public weak var delegate: CreateEventVCDelegate?
     
@@ -110,6 +112,8 @@ class CreateEventVC: UIViewController {
     var selectedCategory: TrackerCategory?
     var categorySubTitle: String = ""
     
+    
+    // MARK: - UI
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.backgroundColor = .ypWhite
@@ -329,15 +333,18 @@ class CreateEventVC: UIViewController {
         return button
     }()
     
+    // MARK: - init
     init(_ event: Event) {
         self.event = event
         super.init(nibName: nil, bundle: nil)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - override methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBG
@@ -363,6 +370,7 @@ class CreateEventVC: UIViewController {
         selectedColorCell = IndexPath(item: indexPathColor, section: 1)
     }
     
+    // MARK: - methods
     func setupEditTracker() {
         if let editTracker = editTracker {
             schedule = editTracker.schedule ?? []
@@ -412,6 +420,7 @@ class CreateEventVC: UIViewController {
         }
     }
     
+    // MARK: -  actions
     @objc func createEventButtonAction() {
         var tracker: Tracker?
         if editTracker == nil {
@@ -455,6 +464,7 @@ class CreateEventVC: UIViewController {
         present(scheduleVC, animated: true)
     }
     
+    // MARK: - UI methods
     private func addSubviews() {
         view.addSubview(scrollView)
         view.addSubview(titleBackgroundView)
@@ -665,6 +675,7 @@ class CreateEventVC: UIViewController {
     }
 }
 
+// MARK: - UITextFieldDelegate
 extension CreateEventVC: UITextFieldDelegate {
     
     internal func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -688,6 +699,7 @@ extension CreateEventVC: UITextFieldDelegate {
     }
 }
 
+// MARK: - ScheduleVCDelegate
 extension CreateEventVC: ScheduleVCDelegate {
     func createSchedule(schedule: [WeekDay]) {
         self.schedule = schedule
@@ -697,6 +709,7 @@ extension CreateEventVC: ScheduleVCDelegate {
     }
 }
 
+// MARK: - CategoryListViewModelDelegate
 extension CreateEventVC: CategoryListViewModelDelegate {
     func createCategory(category: TrackerCategory) {
         self.category = category
@@ -706,6 +719,7 @@ extension CreateEventVC: CategoryListViewModelDelegate {
     }
 }
 
+// MARK: - UICollectionViewDataSource
 extension CreateEventVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var returnValue = Int()
@@ -740,6 +754,7 @@ extension CreateEventVC: UICollectionViewDataSource {
     }
 }
 
+// MARK: - UICollectionViewDelegate
 extension CreateEventVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let section = indexPath.section
@@ -780,6 +795,7 @@ extension CreateEventVC: UICollectionViewDelegate {
     }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 extension CreateEventVC: UICollectionViewDelegateFlowLayout {
     
     func collectionView(
@@ -843,6 +859,7 @@ extension CreateEventVC: UICollectionViewDelegateFlowLayout {
     }
 }
 
+// MARK: - TrackerRecordStoreDelegate
 extension CreateEventVC: TrackerRecordStoreDelegate {
     func store(_ store: TrackerRecordStore, didUpdate update: TrackerRecordStoreUpdate) {
         completedTrackers = trackerRecordStore.trackerRecords
