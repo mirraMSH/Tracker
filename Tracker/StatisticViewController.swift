@@ -13,6 +13,7 @@ final class StatisticViewController: UIViewController {
     private let trackerRecordStore = TrackerRecordStore()
     private var completedTrackers: [TrackerRecord] = []
     
+    // MARK: - UI
     private let statisticTopLabel: UILabel = {
         let trackerLabel = UILabel()
         trackerLabel.text = NSLS.statistics
