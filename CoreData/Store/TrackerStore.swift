@@ -30,7 +30,7 @@ protocol TrackerStoreDelegate: AnyObject {
     )
 }
 
-class TrackerStore: NSObject {
+final class TrackerStore: NSObject {
     
     // MARK: - properties
     weak var delegate: TrackerStoreDelegate?
@@ -122,7 +122,7 @@ class TrackerStore: NSObject {
         }
     }
     
-    func updateExistingTracker(_ trackerCoreData: TrackerCoreData, with tracker: Tracker) {
+    private func updateExistingTracker(_ trackerCoreData: TrackerCoreData, with tracker: Tracker) {
         trackerCoreData.nameTracker = tracker.name
         trackerCoreData.id = tracker.id
         trackerCoreData.emoji = tracker.emoji
@@ -136,7 +136,7 @@ class TrackerStore: NSObject {
         return try trackersFromCoreData.map { try self.tracker(from: $0) }
     }
     
-    func tracker(from data: TrackerCoreData) throws -> Tracker {
+    private  func tracker(from data: TrackerCoreData) throws -> Tracker {
         guard let name = data.nameTracker else {
             throw DatabaseError.someError
         }
@@ -167,7 +167,7 @@ class TrackerStore: NSObject {
 
 // MARK: - NSFetchedResultsControllerDelegate
 extension TrackerStore: NSFetchedResultsControllerDelegate {
-    func controllerWillChangeContent(
+    internal func controllerWillChangeContent(
         _ controller: NSFetchedResultsController<NSFetchRequestResult>) {
             insertedIndexes = IndexSet()
             deletedIndexes = IndexSet()
@@ -175,7 +175,7 @@ extension TrackerStore: NSFetchedResultsControllerDelegate {
             movedIndexes = Set<TrackerStoreUpdate.Move>()
         }
     
-    func controllerDidChangeContent(
+    internal  func controllerDidChangeContent(
         _ controller: NSFetchedResultsController<NSFetchRequestResult>) {
             delegate?.store(
                 self,
@@ -192,7 +192,7 @@ extension TrackerStore: NSFetchedResultsControllerDelegate {
             movedIndexes = nil
         }
     
-    func controller(
+    internal func controller(
         _ controller: NSFetchedResultsController<NSFetchRequestResult>,
         didChange anObject: Any,
         at indexPath: IndexPath?,

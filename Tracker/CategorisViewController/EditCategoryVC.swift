@@ -7,10 +7,13 @@
 
 import UIKit
 
-class EditCategoryVC: UIViewController {
+final class EditCategoryVC: UIViewController {
+    
+    // MARK: - properties
     private let colors = Colors()
     var editableCategory: TrackerCategory?
     
+    // MARK: - UI
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .ypBlack
@@ -48,6 +51,7 @@ class EditCategoryVC: UIViewController {
     
     private let trackerCategoryStore = TrackerCategoryStore()
     
+    // MARK: - actions
     @objc func textFieldChanged() {
         if textField.text != "" {
             editCategoryButton.backgroundColor = .ypBlack
@@ -66,6 +70,7 @@ class EditCategoryVC: UIViewController {
         }
     }
     
+    // MARK: - override
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBG
@@ -74,6 +79,7 @@ class EditCategoryVC: UIViewController {
         setupLayout()
     }
     
+    // MARK: -  UI methods
     private func addSubviews() {
         view.addSubview(titleLabel)
         view.addSubview(textField)

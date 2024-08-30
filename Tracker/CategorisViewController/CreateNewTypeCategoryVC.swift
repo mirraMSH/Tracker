@@ -10,10 +10,12 @@ protocol CreateNewTypeCategoryDelegate: AnyObject {
     func createTracker(_ tracker: Tracker, categoryName: String)
 }
 
-class CreateNewTypeCategoryVC: UIViewController {
+final class CreateNewTypeCategoryVC: UIViewController {
+    // MARK: - properties
     private let colors = Colors()
     public weak var delegate: CreateNewTypeCategoryDelegate?
     
+    // MARK: - UI
     private lazy var label: UILabel = {
         let label = UILabel()
         label.textColor = .ypBlack
@@ -45,6 +47,7 @@ class CreateNewTypeCategoryVC: UIViewController {
         return button
     }()
     
+    // MARK: - override
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBG
@@ -52,6 +55,7 @@ class CreateNewTypeCategoryVC: UIViewController {
         setupLayout()
     }
     
+    // MARK: - action
     @objc private func irregularEventButtonAction() {
         let vc = CreateEventVC(.irregular)
         vc.delegate = self
@@ -64,6 +68,7 @@ class CreateNewTypeCategoryVC: UIViewController {
         present(vc, animated: true)
     }
     
+    // MARK: - UI methods
     private func addSubviews() {
         view.addSubview(label)
         view.addSubview(createRegularEventButton)
@@ -90,6 +95,7 @@ class CreateNewTypeCategoryVC: UIViewController {
     }
 }
 
+// MARK: - CreateEventVCDelegate
 extension CreateNewTypeCategoryVC: CreateEventVCDelegate {
     func createTracker(_ tracker: Tracker, categoryName: String) {
         delegate?.createTracker(tracker, categoryName: categoryName)

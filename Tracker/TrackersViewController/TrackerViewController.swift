@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TrackerViewController: UIViewController {
+final class TrackerViewController: UIViewController {
     
     // MARK: properties
     private let searchController = UISearchController(searchResultsController: nil)
@@ -171,7 +171,7 @@ class TrackerViewController: UIViewController {
     }
     
     // MARK:  actions
-    @objc func dateChanged(_ sender: UIDatePicker) {
+    @objc private func dateChanged(_ sender: UIDatePicker) {
         let components = Calendar.current.dateComponents([.weekday], from: sender.date)
         if let day = components.weekday {
             currentDate = day
@@ -179,7 +179,7 @@ class TrackerViewController: UIViewController {
         }
     }
     
-    @objc func addTracker() {
+    @objc private func addTracker() {
         let trackersVC = CreateNewTypeCategoryVC()
         trackersVC.delegate = self
         present(trackersVC, animated: true)

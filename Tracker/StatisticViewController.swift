@@ -9,6 +9,7 @@ import UIKit
 
 final class StatisticViewController: UIViewController {
     
+    // MARK: -  properties
     private let colors = Colors()
     private let trackerRecordStore = TrackerRecordStore()
     private var completedTrackers: [TrackerRecord] = []
@@ -63,6 +64,7 @@ final class StatisticViewController: UIViewController {
         return label
     }()
     
+    // MARK: - override methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBG
@@ -78,6 +80,7 @@ final class StatisticViewController: UIViewController {
         completedTrackerView.setGradientBorder(width: 1, colors: [.ypGradientColor1, .ypGradientColor2, .ypGradientColor3])
     }
     
+    // MARK: - methods
     func updateCompletedTrackers() {
         completedTrackers = trackerRecordStore.trackerRecords
         resultTitle.text = "\(completedTrackers.count)"
@@ -87,6 +90,7 @@ final class StatisticViewController: UIViewController {
         completedTrackerView.isHidden = completedTrackers.count == 0
     }
     
+    // MARK: -  UI methods
     private func setupViews() {
         view.addSubview(statisticTopLabel)
         view.addSubview(imageNoStatistics)
@@ -127,6 +131,7 @@ final class StatisticViewController: UIViewController {
     }
 }
 
+// MARK: - TrackerRecordStoreDelegate
 extension StatisticViewController: TrackerRecordStoreDelegate {
     func store(_ store: TrackerRecordStore, didUpdate update: TrackerRecordStoreUpdate) {
         updateCompletedTrackers()

@@ -11,11 +11,13 @@ protocol ScheduleVCDelegate: AnyObject {
     func createSchedule(schedule: [WeekDay])
 }
 
-class ScheduleVC: UIViewController {
+final class ScheduleVC: UIViewController {
+    // MARK: - properties
     private let colors = Colors()
     public weak var delegate: ScheduleVCDelegate?
     var schedule: [WeekDay] = []
     
+    // MARK: -  UI
     private lazy var label: UILabel = {
         let label = UILabel()
         label.textColor = .ypBlack
@@ -71,6 +73,7 @@ class ScheduleVC: UIViewController {
         return tableView
     }()
     
+    // MARK: - override methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBG
@@ -78,6 +81,7 @@ class ScheduleVC: UIViewController {
         setupLayout()
     }
     
+    // MARK: - UI methods
     private func addSubviews() {
         view.addSubview(label)
         view.addSubview(scrollView)
@@ -108,6 +112,7 @@ class ScheduleVC: UIViewController {
         ])
     }
     
+    // MARK: - actions
     @objc
     private func enterButtonAction() {
         delegate?.createSchedule(schedule: schedule)
@@ -115,6 +120,7 @@ class ScheduleVC: UIViewController {
     }
 }
 
+// MARK: - UITableViewDataSource
 extension ScheduleVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return WeekDay.allCases.count
@@ -140,6 +146,7 @@ extension ScheduleVC: UITableViewDataSource {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension ScheduleVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
@@ -150,6 +157,7 @@ extension ScheduleVC: UITableViewDelegate {
     }
 }
 
+// MARK: -  WeekDayTableViewCellDelegate
 extension ScheduleVC: WeekDayTableViewCellDelegate {
     func stateChanged(for day: WeekDay, isOn: Bool) {
         if isOn {

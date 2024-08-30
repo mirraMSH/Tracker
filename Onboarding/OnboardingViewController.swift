@@ -6,7 +6,7 @@
 //
 import UIKit
 
-class OnboardingViewController: UIPageViewController {
+final class OnboardingViewController: UIPageViewController {
     
     // MARK: - properties
     let analyticsService = AnalyticsService()
@@ -145,7 +145,8 @@ class OnboardingViewController: UIPageViewController {
     
     @objc private func enterButtonAction() {
         guard let window = UIApplication.shared.windows.first else {
-            fatalError("Invalid Configuration")
+            print("Invalid Configuration: No main window found")
+                    return
         }
         window.rootViewController = TabBarController.configure()
         UserDefaults.standard.set(true, forKey: "isOnbordingShown")

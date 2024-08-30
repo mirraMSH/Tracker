@@ -11,10 +11,13 @@ protocol CreateCategoryVCDelegate {
     func createdCategory(_ category: TrackerCategory)
 }
 
-class CreateCategoryVC: UIViewController {
+final class CreateCategoryVC: UIViewController {
+    
+    // MARK: - properties
     private let colors = Colors()
     var delegate: CreateCategoryVCDelegate?
     
+    // MARK: -  UI
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .ypBlack
@@ -53,6 +56,7 @@ class CreateCategoryVC: UIViewController {
     
     private let trackerCategoryStore = TrackerCategoryStore()
     
+    // MARK: -  actions
     @objc func textFieldChanged() {
         if textField.text != "" {
             addCategoryButton.backgroundColor = .ypBlack
@@ -72,6 +76,7 @@ class CreateCategoryVC: UIViewController {
         }
     }
     
+    // MARK: - override methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBG
@@ -79,6 +84,7 @@ class CreateCategoryVC: UIViewController {
         setupLayout()
     }
     
+    // MARK: - UI methods
     private func addSubviews() {
         view.addSubview(titleLabel)
         view.addSubview(textField)
@@ -104,6 +110,7 @@ class CreateCategoryVC: UIViewController {
     }
 }
 
+// MARK: - UITextFieldDelegate
 extension CreateCategoryVC: UITextFieldDelegate {
     
     internal func textFieldShouldReturn(_ textField: UITextField) -> Bool {

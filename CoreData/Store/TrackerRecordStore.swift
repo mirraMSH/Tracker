@@ -30,7 +30,7 @@ protocol TrackerRecordStoreDelegate: AnyObject {
     )
 }
 
-class TrackerRecordStore: NSObject {
+final class TrackerRecordStore: NSObject {
     // MARK: - properties
     weak var delegate: TrackerRecordStoreDelegate?
     

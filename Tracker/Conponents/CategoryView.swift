@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CategoryView: UIViewController {
+final class CategoryView: UIViewController {
     private let viewModel: CategoryViewModel
     private let colors = Colors()
     
@@ -92,7 +92,7 @@ class CategoryView: UIViewController {
         view.addSubview(tableView)
     }
     
-    func setupLayout() {
+    private func setupLayout() {
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 27),
@@ -135,7 +135,7 @@ class CategoryView: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func makeContextMenu(_ indexPath: IndexPath) -> UIMenu {
+    private func makeContextMenu(_ indexPath: IndexPath) -> UIMenu {
         let category = viewModel.categories[indexPath.row]
         let rename = UIAction(title: "Редактировать", image: nil) { [weak self] action in
             let editCategoryVC = EditCategoryVC()

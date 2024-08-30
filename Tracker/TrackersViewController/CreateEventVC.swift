@@ -36,7 +36,7 @@ protocol CreateEventVCDelegate: AnyObject {
     func createTracker(_ tracker: Tracker, categoryName: String)
 }
 
-class CreateEventVC: UIViewController {
+final class CreateEventVC: UIViewController {
     
     // MARK: - properties and arrays
     private let colors = Colors()
@@ -637,7 +637,7 @@ class CreateEventVC: UIViewController {
         }
     }
     
-    @objc func textFieldChanged() {
+    @objc private func textFieldChanged() {
         updateCreateEventButton()
         guard let number = textField.text?.count else { return }
         numberOfCharacters = number
@@ -650,7 +650,7 @@ class CreateEventVC: UIViewController {
         }
     }
     
-    @objc func plusButtonAction() {
+    @objc private func plusButtonAction() {
         if let editTracker = editTracker,
            let editTrackerDate = editTrackerDate {
             let record = TrackerRecord(idTracker: editTracker.id, date: editTrackerDate)
@@ -660,7 +660,7 @@ class CreateEventVC: UIViewController {
         updatePlusMinusButtons()
     }
     
-    @objc func minusButtonAction() {
+    @objc private func minusButtonAction() {
         if let editTracker = editTracker,
            let editTrackerDate = editTrackerDate {
             if let index = completedTrackers.firstIndex(where: { record in

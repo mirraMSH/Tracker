@@ -30,7 +30,7 @@ protocol TrackerCategoryStoreDelegate: AnyObject {
     )
 }
 
-class TrackerCategoryStore: NSObject {
+final class TrackerCategoryStore: NSObject {
     weak var delegate: TrackerCategoryStoreDelegate?
     
     // MARK: - properties
@@ -195,7 +195,7 @@ extension TrackerCategoryStore {
 
 // MARK: - NSFetchedResultsControllerDelegate
 extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
-    func controllerWillChangeContent(
+    internal func controllerWillChangeContent(
         _ controller: NSFetchedResultsController<NSFetchRequestResult>) {
             insertedIndexes = IndexSet()
             deletedIndexes = IndexSet()
@@ -203,7 +203,7 @@ extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
             movedIndexes = Set<TrackerCategoryStoreUpdate.Move>()
         }
     
-    func controllerDidChangeContent(
+    internal func controllerDidChangeContent(
         _ controller: NSFetchedResultsController<NSFetchRequestResult>) {
             delegate?.store(
                 self,
@@ -220,7 +220,7 @@ extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
             movedIndexes = nil
         }
     
-    func controller(
+    internal func controller(
         _ controller: NSFetchedResultsController<NSFetchRequestResult>,
         didChange anObject: Any,
         at indexPath: IndexPath?,

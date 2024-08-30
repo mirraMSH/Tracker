@@ -11,13 +11,15 @@ protocol FiltersVCDelegate: AnyObject {
     func filterSelected(filter: Filter)
 }
 
-class FiltersVC: UIViewController {
+final class FiltersVC: UIViewController {
+    // MARK: - properies
     private let colors = Colors()
     weak var delegate: FiltersVCDelegate?
     
     private let filters: [Filter] = Filter.allCases
     var selectedFilter: Filter?
     
+    // MARK: -  UI
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .ypBlack
@@ -39,6 +41,7 @@ class FiltersVC: UIViewController {
         return tableView
     }()
     
+    // MARK: -  override methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBG
@@ -46,12 +49,13 @@ class FiltersVC: UIViewController {
         setupLayout()
     }
     
+    // MARK: - UI methods
     private func addSubviews() {
         view.addSubview(titleLabel)
         view.addSubview(tableView)
     }
     
-    func setupLayout() {
+    private func setupLayout() {
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 27),
@@ -64,6 +68,7 @@ class FiltersVC: UIViewController {
     }
 }
 
+// MARK: - UITableViewDataSource
 extension FiltersVC: UITableViewDataSource {
     func tableView(
         _ tableView: UITableView,
@@ -105,6 +110,7 @@ extension FiltersVC: UITableViewDataSource {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension FiltersVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
