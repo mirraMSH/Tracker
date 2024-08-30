@@ -80,7 +80,7 @@
 		9A704F182C73C1C000EEE42B /* TrackerCategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryStore.swift; sourceTree = "<group>"; };
 		9A704F1A2C73C1D100EEE42B /* TrackerRecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordStore.swift; sourceTree = "<group>"; };
 		9A7249C32C6BE5B2006E9557 /* EmojiAndColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiAndColorCollectionViewCell.swift; sourceTree = "<group>"; };
-		9A7C9ACE2C802BFB00E1B1CA /* TrackerTestsYnadex.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerTestsYnadex.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A7C9ACE2C802BFB00E1B1CA /* TrackerTestsYandex.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerTestsYandex.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A7C9AD02C802BFB00E1B1CA /* TrackerTestsYandex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTestsYandex.swift; sourceTree = "<group>"; };
 		9A7C9AD82C80985200E1B1CA /* WeekDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDay.swift; sourceTree = "<group>"; };
 		9A7C9ADA2C809B6300E1B1CA /* WeekDayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayTableViewCell.swift; sourceTree = "<group>"; };
@@ -218,7 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				9AA7B96F2C373DDB00DB0E81 /* Tracker.app */,
-				9A7C9ACE2C802BFB00E1B1CA /* TrackerTestsYnadex.xctest */,
+				9A7C9ACE2C802BFB00E1B1CA /* TrackerTestsYandex.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -345,9 +345,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9A7C9ACD2C802BFB00E1B1CA /* TrackerTestsYnadex */ = {
+		9A7C9ACD2C802BFB00E1B1CA /* TrackerTestsYandex */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9A7C9AD42C802BFB00E1B1CA /* Build configuration list for PBXNativeTarget "TrackerTestsYnadex" */;
+			buildConfigurationList = 9A7C9AD42C802BFB00E1B1CA /* Build configuration list for PBXNativeTarget "TrackerTestsYandex" */;
 			buildPhases = (
 				9A7C9ACA2C802BFB00E1B1CA /* Sources */,
 				9A7C9ACB2C802BFB00E1B1CA /* Frameworks */,
@@ -358,13 +358,13 @@
 			dependencies = (
 				9A7C9AD32C802BFB00E1B1CA /* PBXTargetDependency */,
 			);
-			name = TrackerTestsYnadex;
+			name = TrackerTestsYandex;
 			packageProductDependencies = (
 				9A7C9AE92C80F58700E1B1CA /* InlineSnapshotTesting */,
 				9A7C9AEB2C80F58700E1B1CA /* SnapshotTesting */,
 			);
 			productName = TrackerTestsYnadex;
-			productReference = 9A7C9ACE2C802BFB00E1B1CA /* TrackerTestsYnadex.xctest */;
+			productReference = 9A7C9ACE2C802BFB00E1B1CA /* TrackerTestsYandex.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		9AA7B96E2C373DDB00DB0E81 /* Tracker */ = {
@@ -425,7 +425,7 @@
 			projectRoot = "";
 			targets = (
 				9AA7B96E2C373DDB00DB0E81 /* Tracker */,
-				9A7C9ACD2C802BFB00E1B1CA /* TrackerTestsYnadex */,
+				9A7C9ACD2C802BFB00E1B1CA /* TrackerTestsYandex */,
 			);
 		};
 /* End PBXProject section */
@@ -825,7 +825,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9A7C9AD42C802BFB00E1B1CA /* Build configuration list for PBXNativeTarget "TrackerTestsYnadex" */ = {
+		9A7C9AD42C802BFB00E1B1CA /* Build configuration list for PBXNativeTarget "TrackerTestsYandex" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9A7C9AD52C802BFB00E1B1CA /* Debug */,

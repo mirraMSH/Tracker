@@ -46,8 +46,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9A7C9ACD2C802BFB00E1B1CA"
-               BuildableName = "TrackerTestsYnadex.xctest"
-               BlueprintName = "TrackerTestsYnadex"
+               BuildableName = "TrackerTestsYandex.xctest"
+               BlueprintName = "TrackerTestsYandex"
                ReferencedContainer = "container:Tracker.xcodeproj">
             </BuildableReference>
          </TestableReference>
