@@ -371,7 +371,7 @@ final class CreateEventVC: UIViewController {
     }
     
     // MARK: - methods
-    func setupEditTracker() {
+    private func setupEditTracker() {
         if let editTracker = editTracker {
             schedule = editTracker.schedule ?? []
             textField.text = editTracker.name
@@ -407,7 +407,7 @@ final class CreateEventVC: UIViewController {
         }
     }
     
-    func updateCreateEventButton() {
+    private func updateCreateEventButton() {
         createEventButton.isEnabled = textField.text?.isEmpty == false && selectedColor != nil && !selectedEmoji.isEmpty && category != nil
         if event == .regular {
             createEventButton.isEnabled = createEventButton.isEnabled && !schedule.isEmpty
@@ -421,7 +421,7 @@ final class CreateEventVC: UIViewController {
     }
     
     // MARK: -  actions
-    @objc func createEventButtonAction() {
+    @objc private func createEventButtonAction() {
         var tracker: Tracker?
         if editTracker == nil {
             if event == .regular {
